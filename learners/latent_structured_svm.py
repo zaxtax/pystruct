@@ -18,14 +18,14 @@ class LatentSSVM(BaseSSVM):
         self.latent_iter = latent_iter
         self.logger = logger
 
-    def fit(self, X, Y, H_init=None):
+    def fit(self, X, Y, H_init=None, warm_start=False):
         w = np.zeros(self.model.size_psi)
         constraints = None
         ws = []
         if H_init is None:
             H_init = self.model.init_latent(X, Y)
         self.H_init_ = H_init
-        H = H_init
+        self.H = H_init
 
         for iteration in xrange(self.latent_iter):
             print("LATENT SVM ITERATION %d" % iteration)
@@ -34,7 +34,8 @@ class LatentSSVM(BaseSSVM):
                 pass
             else:
                 H_new = [self.model.latent(x, y, w) for x, y in zip(X, Y)]
-                changes = [np.any(h_new != h) for h_new, h in zip(H_new, H)]
+                changes = [np.any(h_new != h) for h_new, h in zip(H_new,
+                                                                  self.H)]
                 if not np.any(changes):
                     print("no changes in latent variables of ground truth."
                           " stopping.")
@@ -51,9 +52,10 @@ class LatentSSVM(BaseSSVM):
                                                     constraint[0])
                             y_hat, dpsi, _, loss = const
                             constraints[i].append([y_hat, dpsi, loss])
-                H = H_new
+                self.H = H_new
 
-            self.base_ssvm.fit(X, H, constraints=constraints)
+            self.base_ssvm.fit(X, self.H, constraints=constraints,
+                               warm_start=warm_start)
             w = self.base_ssvm.w
             ws.append(w)
             if self.logger is not None:

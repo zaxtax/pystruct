@@ -1,4 +1,4 @@
-######################
+#####################
 # (c) 2012 Andreas Mueller <amueller@ais.uni-bonn.de>
 # License: BSD 3-clause
 #
@@ -130,7 +130,18 @@ class OneSlackSSVM(BaseSSVM):
 
         psi_matrix = np.vstack(psis)
         n_constraints = len(psis)
-        P = cvxopt.matrix(np.dot(psi_matrix, psi_matrix.T))
+        try:
+            # we use try here because if we crashed / pressed ctrl + c
+            # in exactly this moment, it is hard to recover :-/
+            next_column = np.dot(psi_matrix, psis[-1].T)
+            kernel_matrix = np.empty((len(psis), len(psis)))
+            kernel_matrix[:-1, :-1] = self._kernel_old
+            kernel_matrix[:, -1] = next_column
+            kernel_matrix[-1, :] = next_column
+        except:
+            kernel_matrix = np.dot(psi_matrix, psi_matrix.T)
+        P = cvxopt.matrix(kernel_matrix)
+        self._kernel_old = kernel_matrix
         # q contains loss from margin-rescaling
         q = cvxopt.matrix(-np.array(losses, dtype=np.float))
         # constraints: all alpha must be >zero
@@ -167,7 +178,10 @@ class OneSlackSSVM(BaseSSVM):
         #else:
             #initvals = {}
         #solution = cvxopt.solvers.qp(P, q, G, h, A, b, initvals=initvals)
-        solution = cvxopt.solvers.qp(P, q, G, h, A, b)
+        try:
+            solution = cvxopt.solvers.qp(P, q, G, h, A, b)
+        except:
+            solution = {'status': 'failure'}
         if solution['status'] != "optimal":
             print("regularizing QP!")
             P = cvxopt.matrix(np.dot(psi_matrix, psi_matrix.T)
@@ -207,8 +221,9 @@ class OneSlackSSVM(BaseSSVM):
                           for constr in self.alphas]
             # find strongest constraint that is not ground truth constraint
             strongest = np.max(max_active[1:])
-            inactive = np.where(max_active
-                                < self.inactive_threshold * strongest)[0]
+            mask = max_active < self.inactive_threshold * strongest
+            inactive = np.where(mask)[0]
+            self._kernel_old = self._kernel_old[~mask, :][:, ~mask]
 
             for idx in reversed(inactive):
                 # if we don't reverse, we'll mess the indices up
@@ -412,8 +427,13 @@ class OneSlackSSVM(BaseSSVM):
                             X, Y, psi_gt, constraints)
                         self._update_cache(X, Y, Y_hat)
                     except NoConstraint:
-                        print("no additional constraints")
-                        break
+                        if self.cache_tol_ > 1e-5:
+                            self.cache_tol_ = 1e-5
+                            print("AARRRGGG")
+                            continue
+                        else:
+                            print("no additional constraints")
+                            break
 
                 self._compute_training_loss(X, Y, iteration)
                 constraints.append((dpsi, loss_mean))
