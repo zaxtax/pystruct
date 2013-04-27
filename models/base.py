@@ -24,8 +24,8 @@ class StructuredModel(object):
                              (self.size_psi, w.shape))
 
     def psi(self, x, y):
+        raise NotImplementedError()
         # IMPLEMENT ME
-        pass
 
     def batch_psi(self, X, Y, Y_true=None):
         psi_ = np.zeros(self.size_psi)
@@ -45,7 +45,7 @@ class StructuredModel(object):
 
     def inference(self, x, w, relaxed=None):
         # IMPLEMENT ME
-        pass
+        raise NotImplementedError
 
     def batch_inference(self, X, w, relaxed=None):
         # default implementation of batch inference

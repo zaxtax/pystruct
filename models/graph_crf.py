@@ -36,11 +36,15 @@ class GraphCRF(CRF):
     class_weight : None, or array-like
         Class weights. If an array-like is passed, it must have length
         n_classes. None means equal class weights.
+
+    rescale_C : bool, default=False
+        Whether the class-weights should be used to rescale C (liblinear-style)
+        or just rescale the loss.
     """
     def __init__(self, n_states=2, n_features=None, inference_method='qpbo',
-                 class_weight=None):
+                 class_weight=None, rescale_C=False):
         CRF.__init__(self, n_states, n_features, inference_method,
-                     class_weight=class_weight)
+                     class_weight=class_weight, rescale_C=rescale_C)
         # n_states unary parameters, upper triangular for pairwise
         self.size_psi = (n_states * self.n_features
                          + n_states * (n_states + 1) / 2)
@@ -77,7 +81,7 @@ class GraphCRF(CRF):
         return (pairwise_params + pairwise_params.T -
                 np.diag(np.diag(pairwise_params)))
 
-    def get_unary_potentials(self, x, w):
+    def get_unary_potentials(self, x, w, y_true=None):
         """Computes unary potentials for x and w.
 
         Parameters
@@ -99,11 +103,11 @@ class GraphCRF(CRF):
         unary_params = w[:self.n_states * self.n_features].reshape(
             self.n_states, self.n_features)
 
+        if self.rescale_C and y_true is not None:
+            features *= self.class_weight[y_true]
         return np.dot(features, unary_params.T)
-        ## EVIL HACK!!@
-        #return features
 
-    def psi(self, x, y):
+    def psi(self, x, y, y_true=None):
         """Feature vector associated with instance (x, y).
 
         Feature representation psi, such that the energy of the configuration
@@ -119,6 +123,9 @@ class GraphCRF(CRF):
             a complete labeling for x.
             Or it is the result of a linear programming relaxation. In this
             case, ``y=(unary_marginals, pariwise_marginals)``.
+
+        y_true : int
+            True class label. Needed if rescale_C==True.
 
         Returns
         -------
@@ -148,6 +155,12 @@ class GraphCRF(CRF):
             ##accumulated pairwise
             pw = np.dot(unary_marginals[edges[:, 0]].T,
                         unary_marginals[edges[:, 1]])
+
+        if self.rescale_C:
+            if y_true is None:
+                raise ValueError("rescale_C is true, but no y_true was passed"
+                                 " to psi.")
+            unary_marginals *= self.class_weight[y_true]
 
         unaries_acc = np.dot(unary_marginals.T, features)
         pw = pw + pw.T - np.diag(np.diag(pw))  # make symmetric

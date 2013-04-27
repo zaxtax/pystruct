@@ -7,7 +7,7 @@ from ..inference import inference_dispatch
 class CRF(StructuredModel):
     """Abstract base class"""
     def __init__(self, n_states=2, n_features=None, inference_method='qpbo',
-                 class_weight=None):
+                 class_weight=None, rescale_C=False):
         self.n_states = n_states
         self.inference_method = inference_method
         self.inference_calls = 0
@@ -15,6 +15,7 @@ class CRF(StructuredModel):
             # backward compatibilty hack
             n_features = n_states
         self.n_features = n_features
+        self.rescale_C = rescale_C
 
         if class_weight is not None:
             if hasattr(self, 'n_labels'):
@@ -89,7 +90,11 @@ class CRF(StructuredModel):
         """
         self.inference_calls += 1
         self._check_size_w(w)
-        unary_potentials = self.get_unary_potentials(x, w)
+        if self.rescale_C:
+            unary_potentials = self.get_unary_potentials(x, w)
+        else:
+            unary_potentials = self.get_unary_potentials(x, w, y)
+
         pairwise_potentials = self.get_pairwise_potentials(x, w)
         edges = self.get_edges(x)
         # do loss-augmentation
@@ -97,7 +102,10 @@ class CRF(StructuredModel):
             # for each class, decrement features
             # for loss-agumention
             mask = y != l
-            unary_potentials[mask, l] += self.class_weight[y][mask]
+            if self.rescale_C:
+                unary_potentials[mask, l] += 1
+            else:
+                unary_potentials[mask, l] += self.class_weight[y][mask]
 
         return inference_dispatch(unary_potentials, pairwise_potentials, edges,
                                   self.inference_method, relaxed=relaxed,
