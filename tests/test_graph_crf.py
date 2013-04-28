@@ -201,17 +201,37 @@ def test_class_weights_rescale_C_psi_inference():
                                   pbl_cs.psi(x[0].ravel(), y[0],
                                              y_true=y_true))
         w = np.random.normal(size=pbl.size_psi)
-        #print(pbl.inference(x, w))
         assert_array_equal(pbl.inference(x, w),
                            [pbl_cs.inference(x[0].ravel(), w[:12])])
 
-        #print(pbl.loss_augmented_inference(x, y, w))
         assert_array_equal(pbl.loss_augmented_inference(x, y, w),
                            [pbl_cs.loss_augmented_inference(
                                x[0].ravel(), y[0], w[:12])])
 
-        # warum falsch?
+        y_hat, energy = pbl.loss_augmented_inference(x, y, w,
+                                                     return_energy=True)
+        assert_almost_equal(energy,
+                            pbl.loss(y, y_hat)
+                            + np.dot(w, pbl.psi(x, y_hat, y_true=y)))
+
         pot = pbl.get_unary_potentials(x, w, y_true=y)
         for i in xrange(4):
             assert_almost_equal(pot[0, i], np.dot(w, pbl.psi(x, np.array([i]),
                                                              y_true=y)))
+
+
+def test_class_weights_rescale_C_edges():
+    # check consistency of psi and inference when edges are present
+    crf = GraphCRF(n_states=2, inference_method='dai', class_weight=[.3, .8],
+                   rescale_C=True)
+    for i in xrange(10):
+        if i == 0:
+            w_ = w
+        else:
+            w_ = np.random.normal(size=crf.size_psi)
+
+    y, energy = crf.loss_augmented_inference((x_1, g_1), y_1, w_,
+                                             return_energy=True)
+    # energy and psi check out
+    assert_almost_equal(energy, crf.loss(y_1, y)
+                        + np.dot(w_, crf.psi((x_1, g_1), y, y_true=y_1)))
