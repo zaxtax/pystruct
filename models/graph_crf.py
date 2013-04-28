@@ -104,7 +104,7 @@ class GraphCRF(CRF):
             self.n_states, self.n_features)
 
         if self.rescale_C and y_true is not None:
-            features *= self.class_weight[y_true]
+            features = features * self.class_weight[y_true][:, np.newaxis]
         return np.dot(features, unary_params.T)
 
     def psi(self, x, y, y_true=None):
@@ -160,7 +160,8 @@ class GraphCRF(CRF):
             if y_true is None:
                 raise ValueError("rescale_C is true, but no y_true was passed"
                                  " to psi.")
-            unary_marginals *= self.class_weight[y_true]
+            unary_marginals = (unary_marginals
+                               * self.class_weight[y_true][:, np.newaxis])
 
         unaries_acc = np.dot(unary_marginals.T, features)
         pw = pw + pw.T - np.diag(np.diag(pw))  # make symmetric

@@ -166,3 +166,52 @@ def test_graph_crf_class_weights():
     crf = GraphCRF(n_states=3, n_features=3, inference_method='dai',
                    class_weight=[1, .1, 1])
     assert_equal(crf.loss_augmented_inference(x, [1], w), 1)
+
+    # except if we do C rescaling (I think)
+    crf = GraphCRF(n_states=3, n_features=3, inference_method='dai',
+                   class_weight=[1, .1, 1], rescale_C=True)
+    assert_equal(crf.loss_augmented_inference(x, [1], w), 1)
+
+
+def test_class_weights_rescale_C_psi_inference():
+    # check consistency of crammer-singer svm and crf if rescale_C=True
+    from sklearn.datasets import make_blobs
+    from pystruct.problems import CrammerSingerSVMProblem
+    X, Y = make_blobs(n_samples=210, centers=4, random_state=1, cluster_std=3,
+                      shuffle=False)
+    X = np.hstack([X, np.ones((X.shape[0], 1))])
+    X, Y = X[:170], Y[:170]
+
+    weights = 1. / np.bincount(Y)
+    weights *= len(weights) / np.sum(weights)
+
+    X_graphs = [(x[np.newaxis, :], np.empty((0, 2), dtype=np.int)) for x in X]
+
+    pbl = GraphCRF(n_features=3, n_states=4, class_weight=weights,
+                   rescale_C=True, inference_method='dai')
+
+    pbl_cs = CrammerSingerSVMProblem(n_features=3, n_classes=4,
+                                     class_weight=weights, rescale_C=True)
+
+    for x, y in zip(X_graphs, Y[:, np.newaxis]):
+        assert_array_almost_equal(pbl.psi(x, y, y_true=y)[:12],
+                                  pbl_cs.psi(x[0].ravel(), y[0], y_true=y[0]))
+        y_true = np.random.randint(3)
+        assert_array_almost_equal(pbl.psi(x, y, y_true=[y_true])[:12],
+                                  pbl_cs.psi(x[0].ravel(), y[0],
+                                             y_true=y_true))
+        w = np.random.normal(size=pbl.size_psi)
+        #print(pbl.inference(x, w))
+        assert_array_equal(pbl.inference(x, w),
+                           [pbl_cs.inference(x[0].ravel(), w[:12])])
+
+        #print(pbl.loss_augmented_inference(x, y, w))
+        assert_array_equal(pbl.loss_augmented_inference(x, y, w),
+                           [pbl_cs.loss_augmented_inference(
+                               x[0].ravel(), y[0], w[:12])])
+
+        # warum falsch?
+        pot = pbl.get_unary_potentials(x, w, y_true=y)
+        for i in xrange(4):
+            assert_almost_equal(pot[0, i], np.dot(w, pbl.psi(x, np.array([i]),
+                                                             y_true=y)))

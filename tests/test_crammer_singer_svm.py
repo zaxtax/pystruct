@@ -205,6 +205,4 @@ def test_class_weights_rescale_C():
                           class_weight='auto', C=10)
     linearsvm.fit(X, Y)
 
-    #assert_greater(f1_score(Y, svm_class_weight.predict(X)),
-                   #f1_score(Y, svm.predict(X)))
     assert_array_almost_equal(svm_class_weight.w, linearsvm.coef_.ravel(), 3)

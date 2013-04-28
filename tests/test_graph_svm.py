@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.testing import assert_array_equal
+from numpy.testing import assert_array_equal, assert_array_almost_equal
 from nose.tools import assert_greater
 
 from sklearn.datasets import make_blobs
@@ -14,7 +14,7 @@ from pystruct.utils import make_grid_edges
 def test_binary_blocks_cutting_plane():
     #testing cutting plane ssvm on easy binary dataset
     # generate graphs explicitly for each example
-    for inference_method in ["dai", "lp", "qpbo", "ad3", 'ogm']:
+    for inference_method in ["dai", "lp", "qpbo", "ad3"]:
         print("testing %s" % inference_method)
         X, Y = toy.generate_blocks(n_samples=3)
         crf = GraphCRF(inference_method=inference_method)
@@ -88,3 +88,70 @@ def test_standard_svm_blobs_2d_class_weight():
 
     assert_greater(f1_score(Y, svm_class_weight.predict(X_graphs)),
                    f1_score(Y, svm.predict(X_graphs)))
+
+
+def test_class_weights_rescale_C():
+    # check that our crammer-singer implementation with class weights and
+    # rescale_C=True is the same as LinearSVC's c-s class_weight implementation
+    from sklearn.svm import LinearSVC
+    X, Y = make_blobs(n_samples=210, centers=4, random_state=0, cluster_std=3,
+                      shuffle=False)
+    X = np.hstack([X, np.ones((X.shape[0], 1))])
+    X, Y = X[:170][::20], Y[:170][::20]
+
+    weights = 1. / np.bincount(Y)
+    weights *= len(weights) / np.sum(weights)
+
+    X_graphs = [(x[np.newaxis, :], np.empty((0, 2), dtype=np.int)) for x in X]
+
+    pbl_class_weight = GraphCRF(n_features=3, n_states=4, class_weight=weights,
+                                rescale_C=True, inference_method='dai')
+    svm_class_weight = OneSlackSSVM(pbl_class_weight, verbose=10, C=10,
+                                    check_constraints=True, break_on_bad=True)
+    svm_class_weight.fit(X_graphs, Y[:, np.newaxis])
+
+    linearsvm = LinearSVC(multi_class='crammer_singer', fit_intercept=False,
+                          class_weight='auto', C=10)
+    linearsvm.fit(X, Y)
+
+    assert_array_almost_equal(svm_class_weight.w[:12], linearsvm.coef_.ravel(),
+                              3)
+
+
+def test_class_weights_rescale_C_graphs():
+    # check that our crammer-singer implementation with class weights and
+    # rescale_C=True is the same as LinearSVC's c-s class_weight implementation
+    # we join some of the samples to structured examples - shouldn't make a
+    # difference
+    from sklearn.svm import LinearSVC
+    X, Y = make_blobs(n_samples=210, centers=4, random_state=0, cluster_std=3,
+                      shuffle=False)
+    X = np.hstack([X, np.ones((X.shape[0], 1))])
+    X, Y = X[:170][::20], Y[:170][::20]
+
+    weights = 1. / np.bincount(Y)
+    weights *= len(weights) / np.sum(weights)
+
+    #X_graphs = [(x[np.newaxis, :], np.empty((0, 2), dtype=np.int)) for x in X]
+    end = 0
+    X_graphs = []
+    Y_graphs = []
+    while end < len(X):
+        start = end
+        n_points = np.random.randint(2, 5)
+        end = min(start + n_points, len(X))
+        X_graphs.append((X[start:end], np.empty((0, 2), dtype=np.int)))
+        Y_graphs.append(Y[start:end])
+
+    pbl_class_weight = GraphCRF(n_features=3, n_states=4, class_weight=weights,
+                                rescale_C=True, inference_method='dai')
+    svm_class_weight = OneSlackSSVM(pbl_class_weight, verbose=10, C=10,
+                                    check_constraints=True, break_on_bad=True)
+    svm_class_weight.fit(X_graphs, Y_graphs)
+
+    linearsvm = LinearSVC(multi_class='crammer_singer', fit_intercept=False,
+                          class_weight='auto', C=10)
+    linearsvm.fit(X, Y)
+
+    assert_array_almost_equal(svm_class_weight.w[:12], linearsvm.coef_.ravel(),
+                              3)

@@ -91,9 +91,9 @@ class CRF(StructuredModel):
         self.inference_calls += 1
         self._check_size_w(w)
         if self.rescale_C:
-            unary_potentials = self.get_unary_potentials(x, w)
-        else:
             unary_potentials = self.get_unary_potentials(x, w, y)
+        else:
+            unary_potentials = self.get_unary_potentials(x, w)
 
         pairwise_potentials = self.get_pairwise_potentials(x, w)
         edges = self.get_edges(x)
@@ -102,10 +102,7 @@ class CRF(StructuredModel):
             # for each class, decrement features
             # for loss-agumention
             mask = y != l
-            if self.rescale_C:
-                unary_potentials[mask, l] += 1
-            else:
-                unary_potentials[mask, l] += self.class_weight[y][mask]
+            unary_potentials[mask, l] += self.class_weight[y][mask]
 
         return inference_dispatch(unary_potentials, pairwise_potentials, edges,
                                   self.inference_method, relaxed=relaxed,
