@@ -1,0 +1,11 @@
+pystruct.problems.BinarySVMProblem
+==================================
+
+.. currentmodule:: pystruct.problems
+
+.. autoclass:: BinarySVMProblem
+
+   
+   .. automethod:: __init__
+   
+

@@ -1,0 +1,11 @@
+pystruct.problems.EdgeFeatureGraphCRF
+=====================================
+
+.. currentmodule:: pystruct.problems
+
+.. autoclass:: EdgeFeatureGraphCRF
+
+   
+   .. automethod:: __init__
+   
+

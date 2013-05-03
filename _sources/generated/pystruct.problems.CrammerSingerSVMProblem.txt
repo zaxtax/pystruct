@@ -1,0 +1,11 @@
+pystruct.problems.CrammerSingerSVMProblem
+=========================================
+
+.. currentmodule:: pystruct.problems
+
+.. autoclass:: CrammerSingerSVMProblem
+
+   
+   .. automethod:: __init__
+   
+

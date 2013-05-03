@@ -1,0 +1,11 @@
+pystruct.problems.DirectionalGridCRF
+====================================
+
+.. currentmodule:: pystruct.problems
+
+.. autoclass:: DirectionalGridCRF
+
+   
+   .. automethod:: __init__
+   
+

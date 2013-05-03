@@ -1,0 +1,11 @@
+pystruct.problems.LatentGraphCRF
+================================
+
+.. currentmodule:: pystruct.problems
+
+.. autoclass:: LatentGraphCRF
+
+   
+   .. automethod:: __init__
+   
+
