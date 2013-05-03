@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pystruct.models.BinarySVMProblem &mdash; pystruct 0.1-alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1-alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
+    <link rel="next" title="pystruct.models.CrammerSingerSVMProblem" href="pystruct.models.CrammerSingerSVMProblem.html" />
+    <link rel="prev" title="pystruct.learners.PrimalDSStructuredSVM" href="pystruct.learners.PrimalDSStructuredSVM.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.models.CrammerSingerSVMProblem.html" title="pystruct.models.CrammerSingerSVMProblem"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pystruct.learners.PrimalDSStructuredSVM.html" title="pystruct.learners.PrimalDSStructuredSVM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pystruct-models-binarysvmproblem">
+<h1>pystruct.models.BinarySVMProblem<a class="headerlink" href="#pystruct-models-binarysvmproblem" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pystruct.models.BinarySVMProblem">
+<em class="property">class </em><tt class="descclassname">pystruct.models.</tt><tt class="descname">BinarySVMProblem</tt><big>(</big><em>n_features</em><big>)</big><a class="headerlink" href="#pystruct.models.BinarySVMProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formulate standard linear binary SVM in CRF framework.</p>
+<p>Inputs x are simply feature arrays, labels y are -1 or 1.
+No bias / intercept is learned. It is recommended to add a constant one
+feature to the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>n_features</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of features of inputs x.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_inference</span></tt>(X,&nbsp;w)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_loss</span></tt>(Y,&nbsp;Y_hat)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_loss_augmented_inference</span></tt>(X,&nbsp;Y,&nbsp;w[,&nbsp;...])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_psi</span></tt>(X,&nbsp;Y)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">continuous_loss</span></tt>(y,&nbsp;y_hat)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pystruct.models.BinarySVMProblem.inference" title="pystruct.models.BinarySVMProblem.inference"><tt class="xref py py-obj docutils literal"><span class="pre">inference</span></tt></a>(x,&nbsp;w[,&nbsp;relaxed])</td>
+<td>Inference for x using parameters w.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">loss</span></tt>(y,&nbsp;y_hat)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pystruct.models.BinarySVMProblem.loss_augmented_inference" title="pystruct.models.BinarySVMProblem.loss_augmented_inference"><tt class="xref py py-obj docutils literal"><span class="pre">loss_augmented_inference</span></tt></a>(x,&nbsp;y,&nbsp;w[,&nbsp;relaxed])</td>
+<td>Loss-augmented inference for x and y using parameters w.</td>
+</tr>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">max_loss</span></tt>(y)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pystruct.models.BinarySVMProblem.psi" title="pystruct.models.BinarySVMProblem.psi"><tt class="xref py py-obj docutils literal"><span class="pre">psi</span></tt></a>(x,&nbsp;y)</td>
+<td>Compute joint feature vector of x and y.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pystruct.models.BinarySVMProblem.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>n_features</em><big>)</big><a class="headerlink" href="#pystruct.models.BinarySVMProblem.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pystruct.models.BinarySVMProblem.inference">
+<tt class="descname">inference</tt><big>(</big><em>x</em>, <em>w</em>, <em>relaxed=None</em><big>)</big><a class="headerlink" href="#pystruct.models.BinarySVMProblem.inference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inference for x using parameters w.</p>
+<p>Finds armin_y np.dot(w, psi(x, y)), i.e. best possible prediction.</p>
+<p>For a binary SVM, this is just sign(np.dot(w, x) + b))</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : ndarray, shape (n_features,)</p>
+<blockquote>
+<div><p>Input sample features.</p>
+</div></blockquote>
+<p><strong>w</strong> : ndarray, shape=(size_psi,)</p>
+<blockquote>
+<div><p>Parameters of the SVM.</p>
+</div></blockquote>
+<p><strong>relaxed</strong> : ignored</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y_pred</strong> : int</p>
+<blockquote class="last">
+<div><p>Predicted class label.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pystruct.models.BinarySVMProblem.loss_augmented_inference">
+<tt class="descname">loss_augmented_inference</tt><big>(</big><em>x</em>, <em>y</em>, <em>w</em>, <em>relaxed=None</em><big>)</big><a class="headerlink" href="#pystruct.models.BinarySVMProblem.loss_augmented_inference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loss-augmented inference for x and y using parameters w.</p>
+<p>Minimizes over y_hat:
+np.dot(psi(x, y_hat), w) + loss(y, y_hat)
+which is just
+sign(np.dot(x, w) + b - y)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : ndarray, shape (n_features,)</p>
+<blockquote>
+<div><p>Unary evidence / input to augment.</p>
+</div></blockquote>
+<p><strong>y</strong> : int</p>
+<blockquote>
+<div><p>Ground truth labeling relative to which the loss
+will be measured.</p>
+</div></blockquote>
+<p><strong>w</strong> : ndarray, shape (size_psi,)</p>
+<blockquote>
+<div><p>Weights that will be used for inference.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y_hat</strong> : int</p>
+<blockquote class="last">
+<div><p>Label with highest sum of loss and score.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pystruct.models.BinarySVMProblem.psi">
+<tt class="descname">psi</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#pystruct.models.BinarySVMProblem.psi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute joint feature vector of x and y.</p>
+<p>Feature representation psi, such that the energy of the configuration
+(x, y) and a weight vector w is given by np.dot(w, psi(x, y)).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : nd-array, shape=(n_features,)</p>
+<blockquote>
+<div><p>Input sample features.</p>
+</div></blockquote>
+<p><strong>y</strong> : int</p>
+<blockquote>
+<div><p>Class label, either +1 or -1.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>p</strong> : ndarray, shape (size_psi,)</p>
+<blockquote class="last">
+<div><p>Feature vector associated with state (x, y).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pystruct.learners.PrimalDSStructuredSVM.html"
+                        title="previous chapter">pystruct.learners.PrimalDSStructuredSVM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pystruct.models.CrammerSingerSVMProblem.html"
+                        title="next chapter">pystruct.models.CrammerSingerSVMProblem</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/generated/pystruct.models.BinarySVMProblem.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.models.CrammerSingerSVMProblem.html" title="pystruct.models.CrammerSingerSVMProblem"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pystruct.learners.PrimalDSStructuredSVM.html" title="pystruct.learners.PrimalDSStructuredSVM"
+             >previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Andreas Mueller.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

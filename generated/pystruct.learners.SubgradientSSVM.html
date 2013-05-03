@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pystruct.learners.SubgradientSSVM &mdash; pystruct 0.1-alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1-alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
+    <link rel="next" title="pystruct.learners.StructuredPerceptron" href="pystruct.learners.StructuredPerceptron.html" />
+    <link rel="prev" title="pystruct.learners.StructuredSVM" href="pystruct.learners.StructuredSVM.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.learners.StructuredPerceptron.html" title="pystruct.learners.StructuredPerceptron"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pystruct.learners.StructuredSVM.html" title="pystruct.learners.StructuredSVM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pystruct-learners-subgradientssvm">
+<h1>pystruct.learners.SubgradientSSVM<a class="headerlink" href="#pystruct-learners-subgradientssvm" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pystruct.learners.SubgradientSSVM">
+<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">SubgradientSSVM</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>verbose=0</em>, <em>momentum=0.9</em>, <em>learning_rate=0.001</em>, <em>adagrad=False</em>, <em>n_jobs=1</em>, <em>show_loss_every=0</em>, <em>decay_exponent=0</em>, <em>break_on_no_constraints=True</em>, <em>logger=None</em>, <em>batch_size=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structured SVM solver using subgradient descent.</p>
+<blockquote>
+<div><p>Implements a margin rescaled with l1 slack penalty.
+By default, a constant learning rate is used.
+It is also possible to use the adaptive learning rate found by AdaGrad.</p>
+<p>This class implements online subgradient descent. If n_jobs != 1,
+small batches of size n_jobs are used to exploit parallel inference.
+If inference is fast, use n_jobs=1.</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>problem</strong> : StructuredProblem</p>
+<blockquote class="last">
+<div><blockquote>
+<div><p>Object containing problem formulation. Has to implement
+<cite>loss</cite>, <cite>inference</cite> and <cite>loss_augmented_inference</cite>.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>max_iter <span class="classifier-delimiter">:</span> <span class="classifier">int, default=100</span></dt>
+<dd><p class="first last">Maximum number of passes over dataset to find constraints and perform
+updates.</p>
+</dd>
+<dt>C <span class="classifier-delimiter">:</span> <span class="classifier">float, default=1.</span></dt>
+<dd><p class="first last">Regularization parameter</p>
+</dd>
+<dt>verbose <span class="classifier-delimiter">:</span> <span class="classifier">int, default=0</span></dt>
+<dd><p class="first last">Verbosity.</p>
+</dd>
+<dt>learning_rate <span class="classifier-delimiter">:</span> <span class="classifier">float, default=0.001</span></dt>
+<dd><p class="first last">Learning rate used in subgradient descent.</p>
+</dd>
+<dt>momentum <span class="classifier-delimiter">:</span> <span class="classifier">float, default=0.9</span></dt>
+<dd><p class="first last">Momentum used in subgradient descent.</p>
+</dd>
+<dt>adagrad <span class="classifier-delimiter">:</span> <span class="classifier">bool (default=False)</span></dt>
+<dd><p class="first last">Whether to use adagrad gradient scaling.
+Ignores if True, momentum is ignored.</p>
+</dd>
+<dt>n_jobs <span class="classifier-delimiter">:</span> <span class="classifier">int, default=1</span></dt>
+<dd><p class="first last">Number of parallel jobs for inference. -1 means as many as cpus.</p>
+</dd>
+<dt>batch_size <span class="classifier-delimiter">:</span> <span class="classifier">int, default=None</span></dt>
+<dd><p class="first last">Ignored if n_jobs &gt; 1. If n_jobs=1, inference will be done in batches
+of size batch_size.</p>
+</dd>
+<dt>show_loss_every <span class="classifier-delimiter">:</span> <span class="classifier">int, default=0</span></dt>
+<dd><p class="first last">Controlls how often the hamming loss is computed (for monitoring
+purposes). Zero means never, otherwise it will be computed very
+show_loss_every&#8217;th epoch.</p>
+</dd>
+<dt>decay_exponent <span class="classifier-delimiter">:</span> <span class="classifier">float, default=0</span></dt>
+<dd><p class="first">Exponent for decaying learning rate. Effective learning rate is
+<tt class="docutils literal"><span class="pre">learning_rate</span> <span class="pre">/</span> <span class="pre">t</span> <span class="pre">**</span> <span class="pre">decay_exponent</span></tt>. Zero means no decay.</p>
+<blockquote class="last">
+<div><p>Ignored if adagrad=True.</p>
+</div></blockquote>
+</dd>
+<dt>break_on_no_constraints <span class="classifier-delimiter">:</span> <span class="classifier">bool, default=True</span></dt>
+<dd><p class="first last">Break when there are no new constraints found.</p>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="29%" />
+<col width="51%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>w</td>
+<td>nd-array, shape=(problem.psi,)</td>
+<td>The learned weights of the SVM.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">loss_curve_</span></tt></td>
+<td>list of float</td>
+<td>List of loss values if show_loss_every &gt; 0.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">objective_curve_</span></tt></td>
+<td>list of float</td>
+<td>Primal objective after each pass through the dataset.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pystruct.learners.SubgradientSSVM.fit" title="pystruct.learners.SubgradientSSVM.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(X,&nbsp;Y[,&nbsp;constraints])</td>
+<td>Learn parameters using subgradient descent.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pystruct.learners.SubgradientSSVM.get_params" title="pystruct.learners.SubgradientSSVM.get_params"><tt class="xref py py-obj docutils literal"><span class="pre">get_params</span></tt></a>([deep])</td>
+<td>Get parameters for the estimator</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pystruct.learners.SubgradientSSVM.predict" title="pystruct.learners.SubgradientSSVM.predict"><tt class="xref py py-obj docutils literal"><span class="pre">predict</span></tt></a>(X)</td>
+<td>Predict output on examples in X.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pystruct.learners.SubgradientSSVM.score" title="pystruct.learners.SubgradientSSVM.score"><tt class="xref py py-obj docutils literal"><span class="pre">score</span></tt></a>(X,&nbsp;Y)</td>
+<td>Compute score as 1 - loss over whole data set.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pystruct.learners.SubgradientSSVM.set_params" title="pystruct.learners.SubgradientSSVM.set_params"><tt class="xref py py-obj docutils literal"><span class="pre">set_params</span></tt></a>(**params)</td>
+<td>Set the parameters of the estimator.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pystruct.learners.SubgradientSSVM.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>verbose=0</em>, <em>momentum=0.9</em>, <em>learning_rate=0.001</em>, <em>adagrad=False</em>, <em>n_jobs=1</em>, <em>show_loss_every=0</em>, <em>decay_exponent=0</em>, <em>break_on_no_constraints=True</em>, <em>logger=None</em>, <em>batch_size=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pystruct.learners.SubgradientSSVM.fit">
+<tt class="descname">fit</tt><big>(</big><em>X</em>, <em>Y</em>, <em>constraints=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn parameters using subgradient descent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : iterable</p>
+<blockquote>
+<div><p>Traing instances. Contains the structured input objects.
+No requirement on the particular form of entries of X is made.</p>
+</div></blockquote>
+<p><strong>Y</strong> : iterable</p>
+<blockquote>
+<div><p>Training labels. Contains the strctured labels for inputs in X.
+Needs to have the same length as X.</p>
+</div></blockquote>
+<p><strong>constraints</strong> : None</p>
+<blockquote class="last">
+<div><p>Discarded. Only for API compatibility currently.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pystruct.learners.SubgradientSSVM.get_params">
+<tt class="descname">get_params</tt><big>(</big><em>deep=True</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters for the estimator</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>deep: boolean, optional</strong> :</p>
+<blockquote>
+<div><p>If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>params</strong> : mapping of string to any</p>
+<blockquote class="last">
+<div><p>Parameter names mapped to their values.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pystruct.learners.SubgradientSSVM.predict">
+<tt class="descname">predict</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict output on examples in X.
+Parameters
+&#8212;&#8212;&#8212;-
+X : iterable</p>
+<blockquote>
+<div>Traing instances. Contains the structured input objects.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>Y_pred</strong> : list</p>
+<blockquote class="last">
+<div><p>List of inference results for X using the learned parameters.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pystruct.learners.SubgradientSSVM.score">
+<tt class="descname">score</tt><big>(</big><em>X</em>, <em>Y</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score as 1 - loss over whole data set.</p>
+<p>Returns the average accuracy (in terms of problem.loss)
+over X and Y.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>X</strong> : iterable</p>
+<blockquote>
+<div><p>Evaluation data.</p>
+</div></blockquote>
+<p><strong>Y</strong> : iterable</p>
+<blockquote>
+<div><p>True labels.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>score</strong> : float</p>
+<blockquote class="last">
+<div><p>Average of 1 - loss over training examples.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pystruct.learners.SubgradientSSVM.set_params">
+<tt class="descname">set_params</tt><big>(</big><em>**params</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of the estimator.</p>
+<p>The method works on simple estimators as well as on nested objects
+(such as pipelines). The former have parameters of the form
+<tt class="docutils literal"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></tt> so that it&#8217;s possible to update each
+component of a nested object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><strong>self</strong> :</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pystruct.learners.StructuredSVM.html"
+                        title="previous chapter">pystruct.learners.StructuredSVM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pystruct.learners.StructuredPerceptron.html"
+                        title="next chapter">pystruct.learners.StructuredPerceptron</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/generated/pystruct.learners.SubgradientSSVM.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.learners.StructuredPerceptron.html" title="pystruct.learners.StructuredPerceptron"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pystruct.learners.StructuredSVM.html" title="pystruct.learners.StructuredSVM"
+             >previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Andreas Mueller.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
