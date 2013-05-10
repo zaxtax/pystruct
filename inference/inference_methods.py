@@ -148,23 +148,59 @@ def inference_lp(unary_potentials, pairwise_potentials, edges, relaxed=False,
 def inference_ad3(unary_potentials, pairwise_potentials, edges, relaxed=False,
                   verbose=0, return_energy=False):
     import AD3
-    shape_org = unary_potentials.shape[:-1]
     n_states, pairwise_potentials = \
         _validate_params(unary_potentials, pairwise_potentials, edges)
 
     unaries = unary_potentials.reshape(-1, n_states)
     res = AD3.general_graph(unaries, edges, pairwise_potentials,
-                            verbose=0, n_iterations=4000)
+                            verbose=1, n_iterations=1000, exact=True)
     unary_marginals, pairwise_marginals, energy, solver_status = res
+    print solver_status[0],
+    #if solver_status in ["unsolved", "fractional"]:
+    if solver_status == "integral":
+        y = np.argmax(unary_marginals, axis=-1)
+
+    elif solver_status in ["unsolved"]:
+        energy_rounded = compute_energy(unary_potentials, pairwise_potentials,
+                                        edges, np.argmax(unary_marginals,
+                                                         axis=-1))
+        qpbo_result = inference_qpbo(unary_potentials, pairwise_potentials,
+                                     edges)
+        energy_qpbo = compute_energy(unary_potentials, pairwise_potentials,
+                                     edges, qpbo_result)
+        from IPython.core.debugger import Tracer
+        Tracer()()
+        #print("starting improving")
+        #dd_result = inference_ogm(unary_potentials, pairwise_potentials, edges,
+                                  #alg='lf',
+                                  #init=qpbo_result.astype(np.uint64))
+        #print("end improving")
+        #energy_dd = compute_energy(unary_potentials, pairwise_potentials,
+                                   #edges, dd_result)
+        #print("energy: %f rounded: %f qpbo: %f, dd: %f"
+              #% (energy, energy_rounded, energy_qpbo, energy_dd))
+        #if (energy_qpbo > energy_dd):
+            #print("AARRGGG")
+        print("energy: %f rounded: %f qpbo: %f"
+              % (energy, energy_rounded, energy_qpbo))
+        #from IPython.core.debugger import Tracer
+        #Tracer()()
+        if energy_qpbo > energy_rounded:
+            y = qpbo_result
+        else:
+            y = np.argmax(unary_marginals, axis=-1)
+
+        #if energy_rounded >= energy - 1e-5:
+            #return np.argmax(unary_marginals, axis=-1)
     #n_fractional = np.sum(unary_marginals.max(axis=-1) < .99)
     #if n_fractional:
         #print("fractional solutions found: %d" % n_fractional)
-    if relaxed:
-        unary_marginals = unary_marginals.reshape(unary_potentials.shape)
-        y = (unary_marginals, pairwise_marginals)
-    else:
-        y = np.argmax(unary_marginals, axis=-1)
-        y = y.reshape(shape_org)
+    elif solver_status == "fractional":
+        if relaxed:
+            unary_marginals = unary_marginals.reshape(unary_potentials.shape)
+            y = (unary_marginals, pairwise_marginals)
+        else:
+            y = np.argmax(unary_marginals, axis=-1)
     if return_energy:
         return y, -energy
     return y
