@@ -92,10 +92,11 @@ class CRF(StructuredModel):
         self._check_size_w(w)
         if self.rescale_C:
             unary_potentials = self.get_unary_potentials(x, w, y)
+            pairwise_potentials = self.get_pairwise_potentials(x, w, y)
         else:
             unary_potentials = self.get_unary_potentials(x, w)
+            pairwise_potentials = self.get_pairwise_potentials(x, w)
 
-        pairwise_potentials = self.get_pairwise_potentials(x, w)
         edges = self.get_edges(x)
         # do loss-augmentation
         for l in np.arange(self.n_states):

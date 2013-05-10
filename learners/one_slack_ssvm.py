@@ -5,6 +5,8 @@
 # Implements structured SVM as described in Joachims et. al.
 # Cutting-Plane Training of Structural SVMs
 
+from time import time
+
 import numpy as np
 import cvxopt
 import cvxopt.solvers
@@ -185,7 +187,7 @@ class OneSlackSSVM(BaseSSVM):
         if solution['status'] != "optimal":
             print("regularizing QP!")
             P = cvxopt.matrix(np.dot(psi_matrix, psi_matrix.T)
-                              + 1e-8 * np.eye(psi_matrix.shape[0]))
+                              + 1e-3 * np.eye(psi_matrix.shape[0]))
             solution = cvxopt.solvers.qp(P, q, G, h, A, b)
             if solution['status'] != "optimal":
                 from IPython.core.debugger import Tracer
@@ -291,8 +293,12 @@ class OneSlackSSVM(BaseSSVM):
             # this makes it a little less efficient in the caching case.
             # the idea is that if we cache, inference is way more expensive
             # and this doesn't matter much.
-            sample.append((self.model.psi(x, y_hat),
-                           self.model.loss(y, y_hat), y_hat))
+            if getattr(self.problem, 'rescale_C', False):
+                sample.append((self.problem.psi(x, y_hat, y_true=y),
+                               self.problem.loss(y, y_hat), y_hat))
+            else:
+                sample.append((self.problem.psi(x, y_hat),
+                               self.problem.loss(y, y_hat), y_hat))
 
     def _constraint_from_cache(self, X, Y, psi_gt, constraints):
         if (not getattr(self, 'inference_cache_', False) or
@@ -399,7 +405,9 @@ class OneSlackSSVM(BaseSSVM):
             constraints.append((np.zeros(self.model.size_psi), 0))
             self.alphas.append([self.C])
             self.inference_cache_ = None
+            self.timestamps_ = [time()]
         else:
+            self.last_slack_ = -1
             constraints = self.constraints_
 
         # get the psi of the ground truth
@@ -412,6 +420,7 @@ class OneSlackSSVM(BaseSSVM):
             # catch ctrl+c to stop training
 
             for iteration in xrange(self.max_iter):
+                self.timestamps_.append(time() - self.timestamps_[0])
                 # main loop
                 cached_constraint = False
                 if self.verbose > 0:
@@ -427,13 +436,13 @@ class OneSlackSSVM(BaseSSVM):
                             X, Y, psi_gt, constraints)
                         self._update_cache(X, Y, Y_hat)
                     except NoConstraint:
-                        if self.cache_tol_ > 1e-5:
-                            self.cache_tol_ = 1e-5
-                            print("AARRRGGG")
-                            continue
-                        else:
-                            print("no additional constraints")
-                            break
+                        #if self.cache_tol_ > 1e-5:
+                            #self.cache_tol_ = 1e-5
+                            #print("AARRRGGG")
+                            #continue
+                        #else:
+                        print("no additional constraints")
+                        break
 
                 self._compute_training_loss(X, Y, iteration)
                 constraints.append((dpsi, loss_mean))

@@ -55,7 +55,7 @@ class GraphCRF(CRF):
     def get_features(self, x):
         return x[0]
 
-    def get_pairwise_potentials(self, x, w):
+    def get_pairwise_potentials(self, x, w, y_true=None):
         """Computes pairwise potentials for x and w.
 
         Parameters
@@ -78,8 +78,19 @@ class GraphCRF(CRF):
         # set lower triangle of matrix, then make symmetric
         # we could try to redo this using ``scipy.spatial.distance`` somehow
         pairwise_params[np.tri(self.n_states, dtype=np.bool)] = pairwise_flat
-        return (pairwise_params + pairwise_params.T -
-                np.diag(np.diag(pairwise_params)))
+        sym = (pairwise_params + pairwise_params.T -
+               np.diag(np.diag(pairwise_params)))
+        if y_true is not None:
+            pw = []
+            for edge in x[1]:
+                pw.append(sym * self.class_weight[y_true[edge[0]]] *
+                          self.class_weight[y_true[edge[1]]])
+            if not pw:
+                # no edges in this graph
+                return sym
+            return np.array(pw)
+
+        return sym
 
     def get_unary_potentials(self, x, w, y_true=None):
         """Computes unary potentials for x and w.
@@ -141,6 +152,12 @@ class GraphCRF(CRF):
             # y is result of relaxation, tuple of unary and pairwise marginals
             unary_marginals, pw = y
             unary_marginals = unary_marginals.reshape(n_nodes, self.n_states)
+            if self.rescale_C:
+                if y_true is None:
+                    raise ValueError("rescale_C is true, but no y_true was"
+                                     "passed to psi.")
+                unary_marginals = (unary_marginals
+                                   * self.class_weight[y_true][:, np.newaxis])
             # accumulate pairwise
             pw = pw.reshape(-1, self.n_states, self.n_states).sum(axis=0)
         else:
@@ -152,16 +169,15 @@ class GraphCRF(CRF):
             gx = np.ogrid[:n_nodes]
             unary_marginals[gx, y] = 1
 
+            if self.rescale_C:
+                if y_true is None:
+                    raise ValueError("rescale_C is true, but no y_true was"
+                                     "passed to psi.")
+                unary_marginals = (unary_marginals
+                                   * self.class_weight[y_true][:, np.newaxis])
             ##accumulated pairwise
             pw = np.dot(unary_marginals[edges[:, 0]].T,
                         unary_marginals[edges[:, 1]])
-
-        if self.rescale_C:
-            if y_true is None:
-                raise ValueError("rescale_C is true, but no y_true was passed"
-                                 " to psi.")
-            unary_marginals = (unary_marginals
-                               * self.class_weight[y_true][:, np.newaxis])
 
         unaries_acc = np.dot(unary_marginals.T, features)
         pw = pw + pw.T - np.diag(np.diag(pw))  # make symmetric
