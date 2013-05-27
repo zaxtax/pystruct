@@ -26,7 +26,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
-    <link rel="next" title="pystruct.models.GridCRF" href="pystruct.models.GridCRF.html" />
+    <link rel="next" title="pystruct.models.LatentNodeCRF" href="pystruct.models.LatentNodeCRF.html" />
     <link rel="prev" title="pystruct.models.EdgeFeatureGraphCRF" href="pystruct.models.EdgeFeatureGraphCRF.html" /> 
   </head>
   <body>
@@ -40,7 +40,10 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pystruct.models.GridCRF.html" title="pystruct.models.GridCRF"
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.models.LatentNodeCRF.html" title="pystruct.models.LatentNodeCRF"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pystruct.models.EdgeFeatureGraphCRF.html" title="pystruct.models.EdgeFeatureGraphCRF"
@@ -59,7 +62,47 @@
 <dl class="class">
 <dt id="pystruct.models.LatentGraphCRF">
 <em class="property">class </em><tt class="descclassname">pystruct.models.</tt><tt class="descname">LatentGraphCRF</tt><big>(</big><em>n_labels</em>, <em>n_features=None</em>, <em>n_states_per_label=2</em>, <em>inference_method='qpbo'</em><big>)</big><a class="headerlink" href="#pystruct.models.LatentGraphCRF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Latent variable CRF with arbitrary graph.</p>
+<dd><p>CRF with latent states for variables.</p>
+<p>This is also called &#8220;hidden dynamics CRF&#8221;.
+For each output variable there is an additional variable which
+can encode additional states and interactions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>n_labels</strong> : int</p>
+<blockquote>
+<div><p>Number of states of output variables.</p>
+</div></blockquote>
+<p><strong>n_featues</strong> : int or None (default=None).</p>
+<blockquote>
+<div><p>Number of input features per input variable.
+<tt class="docutils literal"><span class="pre">None</span></tt> means it is equal to <tt class="docutils literal"><span class="pre">n_labels</span></tt>.</p>
+</div></blockquote>
+<p><strong>n_states_per_label</strong> : int or list (default=2)</p>
+<blockquote>
+<div><p>Number of latent states associated with each observable state.
+Can be either an integer, which means the same number
+of hidden states will be used for all observable states, or a list
+of integers of length <tt class="docutils literal"><span class="pre">n_labels</span></tt>.</p>
+</div></blockquote>
+<p><strong>inference_method</strong> : string, default=&#8221;qpbo&#8221;</p>
+<blockquote class="last">
+<div><p>Function to call to do inference and loss-augmented inference.
+Possible values are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8216;qpbo&#8217; for QPBO + alpha expansion.</li>
+<li>&#8216;dai&#8217; for LibDAI bindings (which has another parameter).</li>
+<li>&#8216;lp&#8217; for Linear Programming relaxation using GLPK.</li>
+<li>&#8216;ad3&#8217; for AD3 dual decomposition.</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -67,55 +110,58 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_inference</span></tt>(X,&nbsp;w[,&nbsp;relaxed])</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">base_loss</span></tt>(y,&nbsp;y_hat)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_loss</span></tt>(Y,&nbsp;Y_hat)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_inference</span></tt>(X,&nbsp;w[,&nbsp;relaxed])</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_loss_augmented_inference</span></tt>(X,&nbsp;Y,&nbsp;w[,&nbsp;...])</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_loss</span></tt>(Y,&nbsp;Y_hat)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_psi</span></tt>(X,&nbsp;Y)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_loss_augmented_inference</span></tt>(X,&nbsp;Y,&nbsp;w[,&nbsp;...])</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">continuous_loss</span></tt>(y,&nbsp;y_hat)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">batch_psi</span></tt>(X,&nbsp;Y[,&nbsp;Y_true])</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_edges</span></tt>(x)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">continuous_loss</span></tt>(y,&nbsp;y_hat)</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_features</span></tt>(x)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_edges</span></tt>(x)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pystruct.models.LatentGraphCRF.get_pairwise_potentials" title="pystruct.models.LatentGraphCRF.get_pairwise_potentials"><tt class="xref py py-obj docutils literal"><span class="pre">get_pairwise_potentials</span></tt></a>(x,&nbsp;w)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">get_features</span></tt>(x)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pystruct.models.LatentGraphCRF.get_pairwise_potentials" title="pystruct.models.LatentGraphCRF.get_pairwise_potentials"><tt class="xref py py-obj docutils literal"><span class="pre">get_pairwise_potentials</span></tt></a>(x,&nbsp;w)</td>
 <td>Computes pairwise potentials for x and w.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pystruct.models.LatentGraphCRF.get_unary_potentials" title="pystruct.models.LatentGraphCRF.get_unary_potentials"><tt class="xref py py-obj docutils literal"><span class="pre">get_unary_potentials</span></tt></a>(x,&nbsp;w)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pystruct.models.LatentGraphCRF.get_unary_potentials" title="pystruct.models.LatentGraphCRF.get_unary_potentials"><tt class="xref py py-obj docutils literal"><span class="pre">get_unary_potentials</span></tt></a>(x,&nbsp;w)</td>
 <td>Computes unary potentials for x and w.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pystruct.models.LatentGraphCRF.inference" title="pystruct.models.LatentGraphCRF.inference"><tt class="xref py py-obj docutils literal"><span class="pre">inference</span></tt></a>(x,&nbsp;w[,&nbsp;relaxed,&nbsp;return_energy])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pystruct.models.LatentGraphCRF.inference" title="pystruct.models.LatentGraphCRF.inference"><tt class="xref py py-obj docutils literal"><span class="pre">inference</span></tt></a>(x,&nbsp;w[,&nbsp;relaxed,&nbsp;return_energy])</td>
 <td>Inference for x using parameters w.</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">init_latent</span></tt>(X,&nbsp;Y)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">init_latent</span></tt>(X,&nbsp;Y)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">label_from_latent</span></tt>(h)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">label_from_latent</span></tt>(h)</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">latent</span></tt>(x,&nbsp;y,&nbsp;w)</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">latent</span></tt>(x,&nbsp;y,&nbsp;w)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">loss</span></tt>(h,&nbsp;h_hat)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">loss</span></tt>(h,&nbsp;h_hat)</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">loss_augmented_inference</span></tt>(x,&nbsp;h,&nbsp;w[,&nbsp;relaxed,&nbsp;...])</td>
+<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">loss_augmented_inference</span></tt>(x,&nbsp;h,&nbsp;w[,&nbsp;relaxed,&nbsp;...])</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">max_loss</span></tt>(y)</td>
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">max_loss</span></tt>(y)</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pystruct.models.LatentGraphCRF.psi" title="pystruct.models.LatentGraphCRF.psi"><tt class="xref py py-obj docutils literal"><span class="pre">psi</span></tt></a>(x,&nbsp;y)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pystruct.models.LatentGraphCRF.psi" title="pystruct.models.LatentGraphCRF.psi"><tt class="xref py py-obj docutils literal"><span class="pre">psi</span></tt></a>(x,&nbsp;y)</td>
 <td>Feature vector associated with instance (x, y).</td>
 </tr>
 </tbody>
@@ -280,8 +326,8 @@ case, <tt class="docutils literal"><span class="pre">y=(unary_marginals,</span> 
   <p class="topless"><a href="pystruct.models.EdgeFeatureGraphCRF.html"
                         title="previous chapter">pystruct.models.EdgeFeatureGraphCRF</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pystruct.models.GridCRF.html"
-                        title="next chapter">pystruct.models.GridCRF</a></p>
+  <p class="topless"><a href="pystruct.models.LatentNodeCRF.html"
+                        title="next chapter">pystruct.models.LatentNodeCRF</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/generated/pystruct.models.LatentGraphCRF.txt"
@@ -314,7 +360,10 @@ case, <tt class="docutils literal"><span class="pre">y=(unary_marginals,</span> 
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pystruct.models.GridCRF.html" title="pystruct.models.GridCRF"
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.models.LatentNodeCRF.html" title="pystruct.models.LatentNodeCRF"
              >next</a> |</li>
         <li class="right" >
           <a href="pystruct.models.EdgeFeatureGraphCRF.html" title="pystruct.models.EdgeFeatureGraphCRF"

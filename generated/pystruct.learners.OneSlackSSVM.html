@@ -26,7 +26,8 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
-    <link rel="prev" title="pystruct.learners.OneSlackSSVM" href="" /> 
+    <link rel="next" title="pystruct.learners.StructuredSVM" href="pystruct.learners.StructuredSVM.html" />
+    <link rel="prev" title="pystruct.utils.SaveLogger" href="pystruct.utils.SaveLogger.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,7 +40,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="#" title="pystruct.learners.OneSlackSSVM"
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.learners.StructuredSVM.html" title="pystruct.learners.StructuredSVM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pystruct.utils.SaveLogger.html" title="pystruct.utils.SaveLogger"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
       </ul>
@@ -54,8 +61,8 @@
 <h1>pystruct.learners.OneSlackSSVM<a class="headerlink" href="#pystruct-learners-oneslackssvm" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pystruct.learners.OneSlackSSVM">
-<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">OneSlackSSVM</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>tol=1e-05</em>, <em>inference_cache=0</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=50</em>, <em>logger=None</em>, <em>cache_tol='auto'</em><big>)</big><a class="headerlink" href="#pystruct.learners.OneSlackSSVM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Structured SVM training with l1 slack penalty.</p>
+<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">OneSlackSSVM</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>tol=1e-05</em>, <em>inference_cache=0</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=50</em>, <em>logger=None</em>, <em>cache_tol='auto'</em><big>)</big><a class="headerlink" href="#pystruct.learners.OneSlackSSVM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structured SVM solver for the 1-slack QP with l1 slack penalty.</p>
 <blockquote>
 <div>Implements margin rescaled structural SVM using
 the 1-slack formulation and cutting plane method, solved using CVXOPT.
@@ -64,17 +71,17 @@ The optimization is restarted in each iteration.</div></blockquote>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>problem</strong> : StructuredProblem</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : StructuredModel</p>
 <blockquote class="last">
 <div><blockquote>
-<div><p>Object containing problem formulation. Has to implement
+<div><p>Object containing the model structure. Has to implement
 <cite>loss</cite>, <cite>inference</cite> and <cite>loss_augmented_inference</cite>.</p>
 </div></blockquote>
 <dl class="docutils">
 <dt>max_iter <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
 <dd><p class="first last">Maximum number of passes over dataset to find constraints.</p>
 </dd>
-<dt>C <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dt>C <span class="classifier-delimiter">:</span> <span class="classifier">float (default=1)</span></dt>
 <dd><p class="first last">Regularization parameter</p>
 </dd>
 <dt>check_constraints <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
@@ -98,9 +105,6 @@ and debugging, but costly.</p>
 <dd><p class="first last">Controlls how often the hamming loss is computed (for monitoring
 purposes). Zero means never, otherwise it will be computed very
 show_loss_every&#8217;th epoch.</p>
-</dd>
-<dt>batch_size <span class="classifier-delimiter">:</span> <span class="classifier">int, default=100</span></dt>
-<dd><p class="first last">Number of constraints after which we solve the QP again.</p>
 </dd>
 <dt>tol <span class="classifier-delimiter">:</span> <span class="classifier">float, default=1e-5</span></dt>
 <dd><p class="first last">Convergence tolerance. If dual objective decreases less than tol,
@@ -137,33 +141,6 @@ If set to 0, no constraints will be removed.</p>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="19%" />
-<col width="29%" />
-<col width="51%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>w</td>
-<td>nd-array, shape=(problem.psi,)</td>
-<td><blockquote class="first">
-<div>The learned weights of the SVM.</div></blockquote>
-<dl class="last docutils">
-<dt>old_solution <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
-<dd>The last solution found by the qp solver.</dd>
-</dl>
-</td>
-</tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">loss_curve_</span></tt></td>
-<td>list of float</td>
-<td>List of loss values if show_loss_every &gt; 0.</td>
-</tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">objective_curve_</span></tt></td>
-<td>list of float</td>
-<td>Primal objective after each pass through the dataset.</td>
-</tr>
-</tbody>
-</table>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -193,7 +170,7 @@ If set to 0, no constraints will be removed.</p>
 </table>
 <dl class="method">
 <dt id="pystruct.learners.OneSlackSSVM.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>tol=1e-05</em>, <em>inference_cache=0</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=50</em>, <em>logger=None</em>, <em>cache_tol='auto'</em><big>)</big><a class="headerlink" href="#pystruct.learners.OneSlackSSVM.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>tol=1e-05</em>, <em>inference_cache=0</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=50</em>, <em>logger=None</em>, <em>cache_tol='auto'</em><big>)</big><a class="headerlink" href="#pystruct.learners.OneSlackSSVM.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -277,7 +254,7 @@ X : iterable</p>
 <dt id="pystruct.learners.OneSlackSSVM.score">
 <tt class="descname">score</tt><big>(</big><em>X</em>, <em>Y</em><big>)</big><a class="headerlink" href="#pystruct.learners.OneSlackSSVM.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute score as 1 - loss over whole data set.</p>
-<p>Returns the average accuracy (in terms of problem.loss)
+<p>Returns the average accuracy (in terms of model.loss)
 over X and Y.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -332,8 +309,11 @@ component of a nested object.</p>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href=""
-                        title="previous chapter">pystruct.learners.OneSlackSSVM</a></p>
+  <p class="topless"><a href="pystruct.utils.SaveLogger.html"
+                        title="previous chapter">pystruct.utils.SaveLogger</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pystruct.learners.StructuredSVM.html"
+                        title="next chapter">pystruct.learners.StructuredSVM</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/generated/pystruct.learners.OneSlackSSVM.txt"
@@ -366,7 +346,13 @@ component of a nested object.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="#" title="pystruct.learners.OneSlackSSVM"
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.learners.StructuredSVM.html" title="pystruct.learners.StructuredSVM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pystruct.utils.SaveLogger.html" title="pystruct.utils.SaveLogger"
              >previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
       </ul>

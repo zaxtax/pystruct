@@ -1,0 +1,17 @@
+
+
+.. _binary_svm.py:
+
+
+==================
+Binary SVM as SSVM
+==================
+Example of training binary SVM using n-slack QP, 1-slack QP, SGD and
+SMO (libsvm).  Our 1-slack QP does surprisingly well!
+
+
+**Python source code:** :download:`binary_svm.py <binary_svm.py>`
+
+.. literalinclude:: binary_svm.py
+    :lines: 8-
+    

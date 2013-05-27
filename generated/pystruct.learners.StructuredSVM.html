@@ -40,6 +40,9 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="pystruct.learners.SubgradientSSVM.html" title="pystruct.learners.SubgradientSSVM"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -58,8 +61,8 @@
 <h1>pystruct.learners.StructuredSVM<a class="headerlink" href="#pystruct-learners-structuredsvm" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pystruct.learners.StructuredSVM">
-<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">StructuredSVM</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredSVM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Structured SVM training with l1 slack penalty.</p>
+<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">StructuredSVM</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredSVM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structured SVM solver for the n-slack QP with l1 slack penalty.</p>
 <blockquote>
 <div>Implements margin rescaled structural SVM using
 the n-slack formulation and cutting plane method, solved using CVXOPT.
@@ -68,10 +71,10 @@ The optimization is restarted in each iteration.</div></blockquote>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>problem</strong> : StructuredProblem</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : StructuredModel</p>
 <blockquote class="last">
 <div><blockquote>
-<div><p>Object containing problem formulation. Has to implement
+<div><p>Object containing the model structure. Has to implement
 <cite>loss</cite>, <cite>inference</cite> and <cite>loss_augmented_inference</cite>.</p>
 </div></blockquote>
 <dl class="docutils">
@@ -131,13 +134,13 @@ If set to 0, no constraints will be removed.</p>
 <p class="rubric">Attributes</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="19%" />
-<col width="29%" />
-<col width="51%" />
+<col width="20%" />
+<col width="28%" />
+<col width="52%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>w</td>
-<td>nd-array, shape=(problem.psi,)</td>
+<td>nd-array, shape=(model.psi,)</td>
 <td><blockquote class="first">
 <div>The learned weights of the SVM.</div></blockquote>
 <dl class="last docutils">
@@ -185,7 +188,7 @@ If set to 0, no constraints will be removed.</p>
 </table>
 <dl class="method">
 <dt id="pystruct.learners.StructuredSVM.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredSVM.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredSVM.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -273,7 +276,7 @@ X : iterable</p>
 <dt id="pystruct.learners.StructuredSVM.score">
 <tt class="descname">score</tt><big>(</big><em>X</em>, <em>Y</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredSVM.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute score as 1 - loss over whole data set.</p>
-<p>Returns the average accuracy (in terms of problem.loss)
+<p>Returns the average accuracy (in terms of model.loss)
 over X and Y.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -363,6 +366,9 @@ component of a nested object.</p>
              >index</a></li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="pystruct.learners.SubgradientSSVM.html" title="pystruct.learners.SubgradientSSVM"

@@ -40,6 +40,9 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="pystruct.learners.LatentSubgradientSSVM.html" title="pystruct.learners.LatentSubgradientSSVM"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -59,7 +62,48 @@
 <dl class="class">
 <dt id="pystruct.learners.LatentSSVM">
 <em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">LatentSSVM</tt><big>(</big><em>base_ssvm</em>, <em>latent_iter=5</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.LatentSSVM" title="Permalink to this definition">¶</a></dt>
-<dd><p class="rubric">Methods</p>
+<dd><p>Stuctured SVM solver for latent-variable models.</p>
+<p>Alternates between doing latent variale completion and solving the
+completed SSVM problem using the <tt class="docutils literal"><span class="pre">base_ssvm</span></tt> solver.</p>
+<p>The model is expected to know how to initialize itself
+- it should provide a <tt class="docutils literal"><span class="pre">init_latent</span></tt> procedure.</p>
+<p>If the base_ssvm is an n-slack SSVM, the current constraints
+will be adjusted after recomputing the latent variables H.
+If the base_ssvm is a 1-slack SSVM, the inference cache will
+be reused. Both methods drastically speed up learning.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>base_ssvm</strong> : object</p>
+<blockquote>
+<div><p>SSVM solver instance for solving the completed problem.</p>
+</div></blockquote>
+<p><strong>latent_iter</strong> : int (default=5)</p>
+<blockquote>
+<div><p>Number of iterations in the completion / refit loop.</p>
+</div></blockquote>
+<p><strong>logger</strong> : object</p>
+<blockquote class="last">
+<div><p>Logger instance.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">w</span></tt></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
@@ -120,7 +164,7 @@ contained subobjects that are estimators.</p>
 <dt id="pystruct.learners.LatentSSVM.score">
 <tt class="descname">score</tt><big>(</big><em>X</em>, <em>Y</em><big>)</big><a class="headerlink" href="#pystruct.learners.LatentSSVM.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute score as 1 - loss over whole data set.</p>
-<p>Returns the average accuracy (in terms of problem.loss)
+<p>Returns the average accuracy (in terms of model.loss)
 over X and Y.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -210,6 +254,9 @@ component of a nested object.</p>
              >index</a></li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="pystruct.learners.LatentSubgradientSSVM.html" title="pystruct.learners.LatentSubgradientSSVM"

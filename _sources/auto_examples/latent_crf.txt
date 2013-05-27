@@ -1,0 +1,18 @@
+
+
+.. _latent_crf.py:
+
+
+===================
+Latent Dynamics CRF
+===================
+
+Solving a 2d gid problem by introducing latent variable interactions.
+
+
+
+**Python source code:** :download:`latent_crf.py <latent_crf.py>`
+
+.. literalinclude:: latent_crf.py
+    :lines: 9-
+    

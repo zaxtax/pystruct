@@ -1,0 +1,20 @@
+
+
+.. _example_plot_grid_crf.py:
+
+
+
+
+.. rst-class:: horizontal
+
+
+
+
+
+**Python source code:** :download:`plot_grid_crf.py <plot_grid_crf.py>`
+
+.. literalinclude:: plot_grid_crf.py
+    :lines: 2-
+
+**Total running time of the example:**  0.25 seconds
+    

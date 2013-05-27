@@ -38,6 +38,9 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
@@ -49,21 +52,21 @@
           <div class="body">
             
   <h1>Source code for pystruct.models</h1><div class="highlight"><pre>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">StructuredProblem</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">StructuredModel</span>
 <span class="kn">from</span> <span class="nn">.crf</span> <span class="kn">import</span> <span class="n">CRF</span>
 <span class="kn">from</span> <span class="nn">.grid_crf</span> <span class="kn">import</span> <span class="n">GridCRF</span><span class="p">,</span> <span class="n">DirectionalGridCRF</span>
 <span class="kn">from</span> <span class="nn">.graph_crf</span> <span class="kn">import</span> <span class="n">GraphCRF</span><span class="p">,</span> <span class="n">EdgeTypeGraphCRF</span>
 <span class="kn">from</span> <span class="nn">.latent_grid_crf</span> <span class="kn">import</span> <span class="n">LatentGridCRF</span><span class="p">,</span> <span class="n">LatentDirectionalGridCRF</span>
 <span class="kn">from</span> <span class="nn">.latent_graph_crf</span> <span class="kn">import</span> <span class="n">LatentGraphCRF</span>
 <span class="kn">from</span> <span class="nn">.latent_node_crf</span> <span class="kn">import</span> <span class="n">LatentNodeCRF</span>
-<span class="kn">from</span> <span class="nn">.unstructured_svm</span> <span class="kn">import</span> <span class="n">BinarySVMProblem</span><span class="p">,</span> <span class="n">CrammerSingerSVMProblem</span>
-<span class="kn">from</span> <span class="nn">.multilabel_svm</span> <span class="kn">import</span> <span class="n">MultiLabelProblem</span>
+<span class="kn">from</span> <span class="nn">.unstructured_svm</span> <span class="kn">import</span> <span class="n">BinarySVMModel</span><span class="p">,</span> <span class="n">CrammerSingerSVMModel</span>
+<span class="kn">from</span> <span class="nn">.multilabel_svm</span> <span class="kn">import</span> <span class="n">MultiLabelModel</span>
 <span class="kn">from</span> <span class="nn">.edge_feature_graph_crf</span> <span class="kn">import</span> <span class="n">EdgeFeatureGraphCRF</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;StructuredProblem&quot;</span><span class="p">,</span> <span class="s">&quot;CRF&quot;</span><span class="p">,</span> <span class="s">&quot;GridCRF&quot;</span><span class="p">,</span> <span class="s">&quot;GraphCRF&quot;</span><span class="p">,</span>
-           <span class="s">&quot;EdgeTypeGraphCRF&quot;</span><span class="p">,</span> <span class="s">&quot;DirectionalGridCRF&quot;</span><span class="p">,</span> <span class="s">&quot;BinarySVMProblem&quot;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;StructuredModel&quot;</span><span class="p">,</span> <span class="s">&quot;CRF&quot;</span><span class="p">,</span> <span class="s">&quot;GridCRF&quot;</span><span class="p">,</span> <span class="s">&quot;GraphCRF&quot;</span><span class="p">,</span>
+           <span class="s">&quot;EdgeTypeGraphCRF&quot;</span><span class="p">,</span> <span class="s">&quot;DirectionalGridCRF&quot;</span><span class="p">,</span> <span class="s">&quot;BinarySVMModel&quot;</span><span class="p">,</span>
            <span class="s">&quot;LatentGridCRF&quot;</span><span class="p">,</span> <span class="s">&quot;LatentDirectionalGridCRF&quot;</span><span class="p">,</span>
-           <span class="s">&quot;CrammerSingerSVMProblem&quot;</span><span class="p">,</span> <span class="s">&quot;LatentGraphCRF&quot;</span><span class="p">,</span> <span class="s">&quot;MultiLabelProblem&quot;</span><span class="p">,</span>
+           <span class="s">&quot;CrammerSingerSVMModel&quot;</span><span class="p">,</span> <span class="s">&quot;LatentGraphCRF&quot;</span><span class="p">,</span> <span class="s">&quot;MultiLabelModel&quot;</span><span class="p">,</span>
            <span class="s">&quot;LatentNodeCRF&quot;</span><span class="p">,</span> <span class="s">&quot;EdgeFeatureGraphCRF&quot;</span><span class="p">]</span>
 </pre></div>
 
@@ -97,6 +100,9 @@
              >index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="../index.html" >Module code</a> &raquo;</li> 

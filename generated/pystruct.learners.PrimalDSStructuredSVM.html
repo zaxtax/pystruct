@@ -26,6 +26,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
+    <link rel="next" title="pystruct.models.BinarySVMModel" href="pystruct.models.BinarySVMModel.html" />
     <link rel="prev" title="pystruct.learners.LatentSubgradientSSVM" href="pystruct.learners.LatentSubgradientSSVM.html" /> 
   </head>
   <body>
@@ -38,6 +39,12 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.models.BinarySVMModel.html" title="pystruct.models.BinarySVMModel"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pystruct.learners.LatentSubgradientSSVM.html" title="pystruct.learners.LatentSubgradientSSVM"
              accesskey="P">previous</a> |</li>
@@ -54,7 +61,7 @@
 <h1>pystruct.learners.PrimalDSStructuredSVM<a class="headerlink" href="#pystruct-learners-primaldsstructuredsvm" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pystruct.learners.PrimalDSStructuredSVM">
-<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">PrimalDSStructuredSVM</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">PrimalDSStructuredSVM</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses downhill simplex for optimizing an unconstraint primal.</p>
 <p>This is basically a sanity check on all other implementations,
 as this is easier to check for correctness.</p>
@@ -87,7 +94,7 @@ as this is easier to check for correctness.</p>
 </table>
 <dl class="method">
 <dt id="pystruct.learners.PrimalDSStructuredSVM.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -142,7 +149,7 @@ X : iterable</p>
 <dt id="pystruct.learners.PrimalDSStructuredSVM.score">
 <tt class="descname">score</tt><big>(</big><em>X</em>, <em>Y</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute score as 1 - loss over whole data set.</p>
-<p>Returns the average accuracy (in terms of problem.loss)
+<p>Returns the average accuracy (in terms of model.loss)
 over X and Y.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -199,6 +206,9 @@ component of a nested object.</p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="pystruct.learners.LatentSubgradientSSVM.html"
                         title="previous chapter">pystruct.learners.LatentSubgradientSSVM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pystruct.models.BinarySVMModel.html"
+                        title="next chapter">pystruct.models.BinarySVMModel</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/generated/pystruct.learners.PrimalDSStructuredSVM.txt"
@@ -230,6 +240,12 @@ component of a nested object.</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.models.BinarySVMModel.html" title="pystruct.models.BinarySVMModel"
+             >next</a> |</li>
         <li class="right" >
           <a href="pystruct.learners.LatentSubgradientSSVM.html" title="pystruct.learners.LatentSubgradientSSVM"
              >previous</a> |</li>

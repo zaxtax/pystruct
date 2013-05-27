@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Learning &mdash; pystruct 0.1-alpha documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1-alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pystruct 0.1-alpha documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<div class="section" id="learning">
+<h1>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h1>
+<p>This module contains algorithms for solving the structured learning model.
+Most are based on structured support vector machines.</p>
+<p>Currently, I advise to use the OneSlackSSVM, which solves the QP using CVXOPT.
+SubgradientSSVM is a very simple implementation, that also might be interesting.</p>
+<p>StructuredSVM is the n-slack formulation of the QP and should work reliably,
+but is not as optimized as OneSlackSSVM.
+The rest is experimental / for testing.</p>
+<span class="target" id="module-pystruct.learners"></span><table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.OneSlackSSVM.html#pystruct.learners.OneSlackSSVM" title="pystruct.learners.OneSlackSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.OneSlackSSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;C,&nbsp;...])</td>
+<td>Structured SVM solver for the 1-slack QP with l1 slack penalty.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.StructuredSVM.html#pystruct.learners.StructuredSVM" title="pystruct.learners.StructuredSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.StructuredSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;C,&nbsp;...])</td>
+<td>Structured SVM solver for the n-slack QP with l1 slack penalty.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.SubgradientSSVM.html#pystruct.learners.SubgradientSSVM" title="pystruct.learners.SubgradientSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.SubgradientSSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;...])</td>
+<td>Structured SVM solver using subgradient descent.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.StructuredPerceptron.html#pystruct.learners.StructuredPerceptron" title="pystruct.learners.StructuredPerceptron"><tt class="xref py py-obj docutils literal"><span class="pre">learners.StructuredPerceptron</span></tt></a>(model[,&nbsp;...])</td>
+<td>Structured Perceptron training.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.LatentSSVM.html#pystruct.learners.LatentSSVM" title="pystruct.learners.LatentSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.LatentSSVM</span></tt></a>(base_ssvm[,&nbsp;...])</td>
+<td>Stuctured SVM solver for latent-variable models.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.LatentSubgradientSSVM.html#pystruct.learners.LatentSubgradientSSVM" title="pystruct.learners.LatentSubgradientSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.LatentSubgradientSSVM</span></tt></a>(model[,&nbsp;...])</td>
+<td>Latent Variable Structured SVM solver using subgradient descent.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.PrimalDSStructuredSVM.html#pystruct.learners.PrimalDSStructuredSVM" title="pystruct.learners.PrimalDSStructuredSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.PrimalDSStructuredSVM</span></tt></a>(model[,&nbsp;...])</td>
+<td>Uses downhill simplex for optimizing an unconstraint primal.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="models">
+<h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
+<p>This module contains model formulations for several settings.
+They provide the glue between the learning algorithm and the data (and inference).
+The BinarySVMModel implements a standard SVM, the CrammerSingerSVMModel a multi-class SVM
+- which is surprisingly efficient and sometimes comparable to LibLinear Crammer-Singer Implementation.</p>
+<p>GraphCRF implements a simple pairwise model for arbitrary graphs, while EdgeFeatureGraphCRF allows
+for arbitrary features for each edge, symmetric, assymmetric and arbitrary potentials.</p>
+<p>GridCRF is a convenience class for grid graphs.</p>
+<span class="target" id="module-pystruct.models"></span><table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.BinarySVMModel.html#pystruct.models.BinarySVMModel" title="pystruct.models.BinarySVMModel"><tt class="xref py py-obj docutils literal"><span class="pre">models.BinarySVMModel</span></tt></a>(n_features)</td>
+<td>Formulate standard linear binary SVM in CRF framework.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.CrammerSingerSVMModel.html#pystruct.models.CrammerSingerSVMModel" title="pystruct.models.CrammerSingerSVMModel"><tt class="xref py py-obj docutils literal"><span class="pre">models.CrammerSingerSVMModel</span></tt></a>(n_features[,&nbsp;...])</td>
+<td>Formulate linear multiclass SVM in C-S style in CRF framework.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.GraphCRF.html#pystruct.models.GraphCRF" title="pystruct.models.GraphCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.GraphCRF</span></tt></a>([n_states,&nbsp;n_features,&nbsp;...])</td>
+<td>Pairwise CRF on a general graph.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.EdgeFeatureGraphCRF.html#pystruct.models.EdgeFeatureGraphCRF" title="pystruct.models.EdgeFeatureGraphCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.EdgeFeatureGraphCRF</span></tt></a>([n_states,&nbsp;...])</td>
+<td>Pairwise CRF with features/strength associated to each edge.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.LatentGraphCRF.html#pystruct.models.LatentGraphCRF" title="pystruct.models.LatentGraphCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.LatentGraphCRF</span></tt></a>(n_labels[,&nbsp;...])</td>
+<td>CRF with latent states for variables.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.LatentNodeCRF.html#pystruct.models.LatentNodeCRF" title="pystruct.models.LatentNodeCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.LatentNodeCRF</span></tt></a>([n_labels,&nbsp;n_features,&nbsp;...])</td>
+<td>CRF with latent variables.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.GridCRF.html#pystruct.models.GridCRF" title="pystruct.models.GridCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.GridCRF</span></tt></a>([n_states,&nbsp;n_features,&nbsp;...])</td>
+<td>Pairwise CRF on a 2d grid.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.DirectionalGridCRF.html#pystruct.models.DirectionalGridCRF" title="pystruct.models.DirectionalGridCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.DirectionalGridCRF</span></tt></a>([n_states,&nbsp;...])</td>
+<td>CRF in which each direction of edges has their own set of parameters.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-pystruct.inference">
+<span id="inference"></span><h1>Inference<a class="headerlink" href="#module-pystruct.inference" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.inference.inference_dispatch.html#pystruct.inference.inference_dispatch" title="pystruct.inference.inference_dispatch"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_dispatch</span></tt></a>(...[,&nbsp;relaxed,&nbsp;...])</td>
+<td>Wrapper function to dispatch between inference method by string.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.inference.inference_qpbo.html#pystruct.inference.inference_qpbo" title="pystruct.inference.inference_qpbo"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_qpbo</span></tt></a>(unary_potentials,&nbsp;...)</td>
+<td>Inference with PyQPBO backend.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.inference.inference_dai.html#pystruct.inference.inference_dai" title="pystruct.inference.inference_dai"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_dai</span></tt></a>(unary_potentials,&nbsp;...)</td>
+<td>Inference with LibDAI backend.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.inference.inference_lp.html#pystruct.inference.inference_lp" title="pystruct.inference.inference_lp"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_lp</span></tt></a>(unary_potentials,&nbsp;...)</td>
+<td>Inference with build-in LP solver using GLPK backend.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.inference.inference_ad3.html#pystruct.inference.inference_ad3" title="pystruct.inference.inference_ad3"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_ad3</span></tt></a>(unary_potentials,&nbsp;...)</td>
+<td>Inference with AD3 dual decomposition subgradient solver.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-pystruct.utils">
+<span id="utilities"></span><h1>Utilities<a class="headerlink" href="#module-pystruct.utils" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.utils.SaveLogger.html#pystruct.utils.SaveLogger" title="pystruct.utils.SaveLogger"><tt class="xref py py-obj docutils literal"><span class="pre">utils.SaveLogger</span></tt></a>(file_name[,&nbsp;save_every,&nbsp;...])</td>
+<td>Logging class that stores the model periodically.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Learning</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#models">Models</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pystruct.inference">Inference</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pystruct.utils">Utilities</a><ul>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/references.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Andreas Mueller.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

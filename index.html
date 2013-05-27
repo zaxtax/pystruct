@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="#" />
-    <link rel="next" title="pystruct.learners.OneSlackSSVM" href="generated/pystruct.learners.OneSlackSSVM.html" /> 
+    <link rel="next" title="Examples" href="auto_examples/index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,7 +39,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="generated/pystruct.learners.OneSlackSSVM.html" title="pystruct.learners.OneSlackSSVM"
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="auto_examples/index.html" title="Examples"
              accesskey="N">next</a> |</li>
         <li><a href="#">pystruct 0.1-alpha documentation</a> &raquo;</li> 
       </ul>
@@ -66,8 +69,8 @@ is also a simple perceptron.</p>
 </div>
 <div class="section" id="crfs-aka-models">
 <h1>CRFs aka Models<a class="headerlink" href="#crfs-aka-models" title="Permalink to this headline">¶</a></h1>
-<p>Know about the problem.</p>
-<p>These know about the structure of the problem, the loss and the inference. This
+<p>Know about the model formulation.</p>
+<p>These know about the structure of the model, the loss and the inference. This
 is basically the part that you have to write yourself when using the Python
 interface in SVM^struct. I am only working on pairwise models and there is
 support for grids and general graphs. I am mostly working on the grids at the
@@ -75,21 +78,37 @@ moment.</p>
 </div>
 <div class="section" id="inference-solvers">
 <h1>Inference Solvers<a class="headerlink" href="#inference-solvers" title="Permalink to this headline">¶</a></h1>
-<p>Doe the inference.</p>
+<p>Do the inference.</p>
 <p>There are some options to use different solvers for inference. A linear
 programming solver using GLPK is included. I have Python interfaces for several
 other methods on github, including LibDAI, QPBO, AD3 and GCO (submodular graph
 cuts).</p>
 <p>This is where the heavy lifting is done and in some sense these backends are
-exchangeable. I&#8217;m hoping to unify stuff a bit more here.</p>
+interchangeable.</p>
+<p>Currently I would recommend AD3 for very accurate solutions and QPBO for larger models.
+The OneSlackSSVM includes an option (<tt class="docutils literal"><span class="pre">switch_to_ad3</span></tt>) to switch the solver to AD3 when no
+constraints can be found using the previous solver (which should be a faster undergenerating solver, such as QPBO).</p>
+</div>
+<div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>See the example gallery:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a><ul>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="remarks">
 <h1>Remarks<a class="headerlink" href="#remarks" title="Permalink to this headline">¶</a></h1>
 <p>There is also some stuff on latent SVMs here that is my current research and I&#8217;d ask you not to steal it ;)</p>
 <p>For updates, read my blog at <a class="reference external" href="http://peekaboo-vision.blogspot.com">http://peekaboo-vision.blogspot.com</a></p>
 <p>There are not publications yet that you can cite for this, I&#8217;m hoping there will be some in the future.</p>
-<p>Btw: this is research with unit tests!
-Installation</p>
+<p>Btw: this is research with unit tests!</p>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>There is no need to compile anything, this pure Python. (FIXME, Crammer-Singer has a cython part!)</p>
 <p>There are quite a couple of requirements, though:</p>
 <ul>
@@ -110,7 +129,7 @@ Installation</p>
 </div>
 <div class="section" id="learning">
 <h1>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h1>
-<p>This module contains algorithms for solving the structured learning problem.
+<p>This module contains algorithms for solving the structured learning model.
 Most are based on structured support vector machines.</p>
 <p>Currently, I advise to use the OneSlackSSVM, which solves the QP using CVXOPT.
 SubgradientSSVM is a very simple implementation, that also might be interesting.</p>
@@ -123,25 +142,25 @@ The rest is experimental / for testing.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.OneSlackSSVM.html#pystruct.learners.OneSlackSSVM" title="pystruct.learners.OneSlackSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.OneSlackSSVM</span></tt></a>(problem[,&nbsp;max_iter,&nbsp;...])</td>
-<td>Structured SVM training with l1 slack penalty.</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.OneSlackSSVM.html#pystruct.learners.OneSlackSSVM" title="pystruct.learners.OneSlackSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.OneSlackSSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;C,&nbsp;...])</td>
+<td>Structured SVM solver for the 1-slack QP with l1 slack penalty.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.StructuredSVM.html#pystruct.learners.StructuredSVM" title="pystruct.learners.StructuredSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.StructuredSVM</span></tt></a>(problem[,&nbsp;max_iter,&nbsp;...])</td>
-<td>Structured SVM training with l1 slack penalty.</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.StructuredSVM.html#pystruct.learners.StructuredSVM" title="pystruct.learners.StructuredSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.StructuredSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;C,&nbsp;...])</td>
+<td>Structured SVM solver for the n-slack QP with l1 slack penalty.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.SubgradientSSVM.html#pystruct.learners.SubgradientSSVM" title="pystruct.learners.SubgradientSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.SubgradientSSVM</span></tt></a>(problem[,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.SubgradientSSVM.html#pystruct.learners.SubgradientSSVM" title="pystruct.learners.SubgradientSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.SubgradientSSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;...])</td>
 <td>Structured SVM solver using subgradient descent.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.StructuredPerceptron.html#pystruct.learners.StructuredPerceptron" title="pystruct.learners.StructuredPerceptron"><tt class="xref py py-obj docutils literal"><span class="pre">learners.StructuredPerceptron</span></tt></a>(problem[,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.StructuredPerceptron.html#pystruct.learners.StructuredPerceptron" title="pystruct.learners.StructuredPerceptron"><tt class="xref py py-obj docutils literal"><span class="pre">learners.StructuredPerceptron</span></tt></a>(model[,&nbsp;...])</td>
 <td>Structured Perceptron training.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.LatentSSVM.html#pystruct.learners.LatentSSVM" title="pystruct.learners.LatentSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.LatentSSVM</span></tt></a>(base_ssvm[,&nbsp;...])</td>
-<td></td>
+<td>Stuctured SVM solver for latent-variable models.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.LatentSubgradientSSVM.html#pystruct.learners.LatentSubgradientSSVM" title="pystruct.learners.LatentSubgradientSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.LatentSubgradientSSVM</span></tt></a>(problem[,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.LatentSubgradientSSVM.html#pystruct.learners.LatentSubgradientSSVM" title="pystruct.learners.LatentSubgradientSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.LatentSubgradientSSVM</span></tt></a>(model[,&nbsp;...])</td>
 <td>Latent Variable Structured SVM solver using subgradient descent.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.PrimalDSStructuredSVM.html#pystruct.learners.PrimalDSStructuredSVM" title="pystruct.learners.PrimalDSStructuredSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.PrimalDSStructuredSVM</span></tt></a>(problem[,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.PrimalDSStructuredSVM.html#pystruct.learners.PrimalDSStructuredSVM" title="pystruct.learners.PrimalDSStructuredSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.PrimalDSStructuredSVM</span></tt></a>(model[,&nbsp;...])</td>
 <td>Uses downhill simplex for optimizing an unconstraint primal.</td>
 </tr>
 </tbody>
@@ -149,9 +168,9 @@ The rest is experimental / for testing.</p>
 </div>
 <div class="section" id="models">
 <h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
-<p>This module contains problem formulations for several settings.
+<p>This module contains model formulations for several settings.
 They provide the glue between the learning algorithm and the data (and inference).
-The BinarySVMProblem implements a standard SVM, the CrammerSingerSVMProblem a multi-class SVM
+The BinarySVMModel implements a standard SVM, the CrammerSingerSVMModel a multi-class SVM
 - which is surprisingly efficient and sometimes comparable to LibLinear Crammer-Singer Implementation.</p>
 <p>GraphCRF implements a simple pairwise model for arbitrary graphs, while EdgeFeatureGraphCRF allows
 for arbitrary features for each edge, symmetric, assymmetric and arbitrary potentials.</p>
@@ -162,10 +181,10 @@ for arbitrary features for each edge, symmetric, assymmetric and arbitrary poten
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.BinarySVMProblem.html#pystruct.models.BinarySVMProblem" title="pystruct.models.BinarySVMProblem"><tt class="xref py py-obj docutils literal"><span class="pre">models.BinarySVMProblem</span></tt></a>(n_features)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.BinarySVMModel.html#pystruct.models.BinarySVMModel" title="pystruct.models.BinarySVMModel"><tt class="xref py py-obj docutils literal"><span class="pre">models.BinarySVMModel</span></tt></a>(n_features)</td>
 <td>Formulate standard linear binary SVM in CRF framework.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.CrammerSingerSVMProblem.html#pystruct.models.CrammerSingerSVMProblem" title="pystruct.models.CrammerSingerSVMProblem"><tt class="xref py py-obj docutils literal"><span class="pre">models.CrammerSingerSVMProblem</span></tt></a>(n_features[,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.CrammerSingerSVMModel.html#pystruct.models.CrammerSingerSVMModel" title="pystruct.models.CrammerSingerSVMModel"><tt class="xref py py-obj docutils literal"><span class="pre">models.CrammerSingerSVMModel</span></tt></a>(n_features[,&nbsp;...])</td>
 <td>Formulate linear multiclass SVM in C-S style in CRF framework.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.GraphCRF.html#pystruct.models.GraphCRF" title="pystruct.models.GraphCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.GraphCRF</span></tt></a>([n_states,&nbsp;n_features,&nbsp;...])</td>
@@ -175,12 +194,15 @@ for arbitrary features for each edge, symmetric, assymmetric and arbitrary poten
 <td>Pairwise CRF with features/strength associated to each edge.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.LatentGraphCRF.html#pystruct.models.LatentGraphCRF" title="pystruct.models.LatentGraphCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.LatentGraphCRF</span></tt></a>(n_labels[,&nbsp;...])</td>
-<td>Latent variable CRF with arbitrary graph.</td>
+<td>CRF with latent states for variables.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.GridCRF.html#pystruct.models.GridCRF" title="pystruct.models.GridCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.GridCRF</span></tt></a>([n_states,&nbsp;n_features,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.LatentNodeCRF.html#pystruct.models.LatentNodeCRF" title="pystruct.models.LatentNodeCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.LatentNodeCRF</span></tt></a>([n_labels,&nbsp;n_features,&nbsp;...])</td>
+<td>CRF with latent variables.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.GridCRF.html#pystruct.models.GridCRF" title="pystruct.models.GridCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.GridCRF</span></tt></a>([n_states,&nbsp;n_features,&nbsp;...])</td>
 <td>Pairwise CRF on a 2d grid.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.models.DirectionalGridCRF.html#pystruct.models.DirectionalGridCRF" title="pystruct.models.DirectionalGridCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.DirectionalGridCRF</span></tt></a>([n_states,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.models.DirectionalGridCRF.html#pystruct.models.DirectionalGridCRF" title="pystruct.models.DirectionalGridCRF"><tt class="xref py py-obj docutils literal"><span class="pre">models.DirectionalGridCRF</span></tt></a>([n_states,&nbsp;...])</td>
 <td>CRF in which each direction of edges has their own set of parameters.</td>
 </tr>
 </tbody>
@@ -195,31 +217,36 @@ for arbitrary features for each edge, symmetric, assymmetric and arbitrary poten
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.inference.inference_dispatch.html#pystruct.inference.inference_dispatch" title="pystruct.inference.inference_dispatch"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_dispatch</span></tt></a>(...[,&nbsp;relaxed,&nbsp;...])</td>
-<td></td>
+<td>Wrapper function to dispatch between inference method by string.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/pystruct.inference.inference_qpbo.html#pystruct.inference.inference_qpbo" title="pystruct.inference.inference_qpbo"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_qpbo</span></tt></a>(unary_potentials,&nbsp;...)</td>
-<td></td>
+<td>Inference with PyQPBO backend.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.inference.inference_dai.html#pystruct.inference.inference_dai" title="pystruct.inference.inference_dai"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_dai</span></tt></a>(unary_potentials,&nbsp;...)</td>
-<td></td>
+<td>Inference with LibDAI backend.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/pystruct.inference.inference_lp.html#pystruct.inference.inference_lp" title="pystruct.inference.inference_lp"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_lp</span></tt></a>(unary_potentials,&nbsp;...)</td>
-<td></td>
+<td>Inference with build-in LP solver using GLPK backend.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.inference.inference_ad3.html#pystruct.inference.inference_ad3" title="pystruct.inference.inference_ad3"><tt class="xref py py-obj docutils literal"><span class="pre">inference.inference_ad3</span></tt></a>(unary_potentials,&nbsp;...)</td>
-<td></td>
+<td>Inference with AD3 dual decomposition subgradient solver.</td>
 </tr>
 </tbody>
 </table>
-<p>Contents:</p>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
+<div class="section" id="module-pystruct.utils">
+<span id="utilities"></span><h1>Utilities<a class="headerlink" href="#module-pystruct.utils" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.utils.SaveLogger.html#pystruct.utils.SaveLogger" title="pystruct.utils.SaveLogger"><tt class="xref py py-obj docutils literal"><span class="pre">utils.SaveLogger</span></tt></a>(file_name[,&nbsp;save_every,&nbsp;...])</td>
+<td>Logging class that stores the model periodically.</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 
@@ -234,7 +261,11 @@ for arbitrary features for each edge, symmetric, assymmetric and arbitrary poten
 <li><a class="reference internal" href="#structural-svms">Structural SVMs</a></li>
 <li><a class="reference internal" href="#crfs-aka-models">CRFs aka Models</a></li>
 <li><a class="reference internal" href="#inference-solvers">Inference Solvers</a></li>
-<li><a class="reference internal" href="#remarks">Remarks</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#remarks">Remarks</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
 </ul>
 </li>
 <li><a class="reference internal" href="#learning">Learning</a><ul>
@@ -246,12 +277,14 @@ for arbitrary features for each edge, symmetric, assymmetric and arbitrary poten
 <li><a class="reference internal" href="#module-pystruct.inference">Inference</a><ul>
 </ul>
 </li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#module-pystruct.utils">Utilities</a><ul>
+</ul>
+</li>
 </ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="generated/pystruct.learners.OneSlackSSVM.html"
-                        title="next chapter">pystruct.learners.OneSlackSSVM</a></p>
+  <p class="topless"><a href="auto_examples/index.html"
+                        title="next chapter">Examples</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/index.txt"
@@ -284,7 +317,10 @@ for arbitrary features for each edge, symmetric, assymmetric and arbitrary poten
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="generated/pystruct.learners.OneSlackSSVM.html" title="pystruct.learners.OneSlackSSVM"
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="auto_examples/index.html" title="Examples"
              >next</a> |</li>
         <li><a href="#">pystruct 0.1-alpha documentation</a> &raquo;</li> 
       </ul>

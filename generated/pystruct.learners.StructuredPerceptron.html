@@ -40,6 +40,9 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="pystruct.learners.LatentSSVM.html" title="pystruct.learners.LatentSSVM"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -58,23 +61,23 @@
 <h1>pystruct.learners.StructuredPerceptron<a class="headerlink" href="#pystruct-learners-structuredperceptron" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pystruct.learners.StructuredPerceptron">
-<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">StructuredPerceptron</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>verbose=0</em>, <em>batch=False</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredPerceptron" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">StructuredPerceptron</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>verbose=0</em>, <em>batch=False</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredPerceptron" title="Permalink to this definition">¶</a></dt>
 <dd><p>Structured Perceptron training.</p>
 <blockquote>
 <div>Implements a simple structured perceptron without regularization.
 The structured perceptron approximately minimizes the zero-one loss.
-Therefore the learning does not take problem.loss into account.
+Therefore the learning does not take model.loss into account.
 It is just shown to illustrate the learning progress.
-As the perceptron learning is not margin-based, the problem does not
+As the perceptron learning is not margin-based, the model does not
 need to provide loss_augmented_inference.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>problem</strong> : StructuredProblem</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : StructuredModel</p>
 <blockquote class="last">
 <div><blockquote>
-<div><p>Object containing problem formulation. Has to implement
+<div><p>Object containing model structure. Has to implement
 <cite>loss</cite>, <cite>inference</cite>.</p>
 </div></blockquote>
 <dl class="docutils">
@@ -98,12 +101,12 @@ parameters.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="15%" />
-<col width="30%" />
-<col width="55%" />
+<col width="28%" />
+<col width="57%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>w</td>
-<td>nd-array, shape=(problem.psi,)</td>
+<td>nd-array, shape=(model.psi,)</td>
 <td>The learned weights of the SVM.</td>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">loss_curve_</span></tt></td>
@@ -138,7 +141,7 @@ parameters.</p>
 </table>
 <dl class="method">
 <dt id="pystruct.learners.StructuredPerceptron.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>verbose=0</em>, <em>batch=False</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredPerceptron.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>verbose=0</em>, <em>batch=False</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredPerceptron.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -217,7 +220,7 @@ X : iterable</p>
 <dt id="pystruct.learners.StructuredPerceptron.score">
 <tt class="descname">score</tt><big>(</big><em>X</em>, <em>Y</em><big>)</big><a class="headerlink" href="#pystruct.learners.StructuredPerceptron.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute score as 1 - loss over whole data set.</p>
-<p>Returns the average accuracy (in terms of problem.loss)
+<p>Returns the average accuracy (in terms of model.loss)
 over X and Y.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -307,6 +310,9 @@ component of a nested object.</p>
              >index</a></li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="pystruct.learners.LatentSSVM.html" title="pystruct.learners.LatentSSVM"

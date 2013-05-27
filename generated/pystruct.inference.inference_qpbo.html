@@ -40,6 +40,9 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="pystruct.inference.inference_dai.html" title="pystruct.inference.inference_dai"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -59,7 +62,35 @@
 <dl class="function">
 <dt id="pystruct.inference.inference_qpbo">
 <tt class="descclassname">pystruct.inference.</tt><tt class="descname">inference_qpbo</tt><big>(</big><em>unary_potentials</em>, <em>pairwise_potentials</em>, <em>edges</em><big>)</big><a class="headerlink" href="#pystruct.inference.inference_qpbo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Inference with PyQPBO backend.</p>
+<p>Used QPBO-I based move-making for undergenerating inference.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>unary_potentials</strong> : nd-array</p>
+<blockquote>
+<div><p>Unary potentials of energy function.</p>
+</div></blockquote>
+<p><strong>pairwise_potentials</strong> : nd-array</p>
+<blockquote>
+<div><p>Pairwise potentials of energy function.</p>
+</div></blockquote>
+<p><strong>edges</strong> : nd-array</p>
+<blockquote>
+<div><p>Edges of energy function.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>labels</strong> : nd-array</p>
+<blockquote class="last">
+<div><p>Approximate (usually) MAP variable assignment.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 
@@ -105,6 +136,9 @@
              >index</a></li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="pystruct.inference.inference_dai.html" title="pystruct.inference.inference_dai"

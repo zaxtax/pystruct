@@ -26,7 +26,8 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
-    <link rel="next" title="pystruct.inference.inference_qpbo" href="pystruct.inference.inference_qpbo.html" /> 
+    <link rel="next" title="pystruct.inference.inference_qpbo" href="pystruct.inference.inference_qpbo.html" />
+    <link rel="prev" title="pystruct.models.DirectionalGridCRF" href="pystruct.models.DirectionalGridCRF.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,8 +40,14 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="pystruct.inference.inference_qpbo.html" title="pystruct.inference.inference_qpbo"
              accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pystruct.models.DirectionalGridCRF.html" title="pystruct.models.DirectionalGridCRF"
+             accesskey="P">previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -54,8 +61,63 @@
 <h1>pystruct.inference.inference_dispatch<a class="headerlink" href="#pystruct-inference-inference-dispatch" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="pystruct.inference.inference_dispatch">
-<tt class="descclassname">pystruct.inference.</tt><tt class="descname">inference_dispatch</tt><big>(</big><em>unary_potentials</em>, <em>pairwise_potentials</em>, <em>edges</em>, <em>inference_method</em>, <em>relaxed=False</em>, <em>return_energy=False</em><big>)</big><a class="headerlink" href="#pystruct.inference.inference_dispatch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descclassname">pystruct.inference.</tt><tt class="descname">inference_dispatch</tt><big>(</big><em>unary_potentials</em>, <em>pairwise_potentials</em>, <em>edges</em>, <em>inference_method</em>, <em>relaxed=False</em>, <em>return_energy=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pystruct.inference.inference_dispatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper function to dispatch between inference method by string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>unary_potentials</strong> : nd-array</p>
+<blockquote>
+<div><p>Unary potentials of energy function.</p>
+</div></blockquote>
+<p><strong>pairwise_potentials</strong> : nd-array</p>
+<blockquote>
+<div><p>Pairwise potentials of energy function.</p>
+</div></blockquote>
+<p><strong>edges</strong> : nd-array</p>
+<blockquote>
+<div><p>Edges of energy function.</p>
+</div></blockquote>
+<p><strong>inference_method</strong> : string</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Possible choices currently are:</dt>
+<dd><ul class="first last simple">
+<li>&#8216;qpbo&#8217; for QPBO alpha-expansion (fast but approximate).</li>
+<li>&#8216;dai&#8217; for libDAI wrappers (default to junction tree).</li>
+<li>&#8216;lp&#8217; for build-in lp relaxation via GLPK (slow).</li>
+<li>&#8216;ad3&#8217; for AD^3 subgradient based dual solution of LP.</li>
+<li>&#8216;ogm&#8217; for OpenGM wrappers.</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>relaxed</strong> : bool (default=False)</p>
+<blockquote>
+<div><p>Whether to return a relaxed solution (when appropriate)
+or round to the nearest integer solution. Only used for &#8216;lp&#8217; and &#8216;ad3&#8217;
+inference methods.</p>
+</div></blockquote>
+<p><strong>return_energy</strong> : bool (default=False)</p>
+<blockquote>
+<div><p>Additionally return the energy of the returned solution (according to
+the solver).  If relaxed=False, this is the energy of the relaxed, not
+the rounded solution.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>labels</strong> : nd-array</p>
+<blockquote class="last">
+<div><p>Approximate (usually) MAP variable assignment.
+If relaxed=True, this is a tuple of unary and pairwise &#8220;marginals&#8221;
+from the LP relaxation.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 
@@ -65,6 +127,9 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pystruct.models.DirectionalGridCRF.html"
+                        title="previous chapter">pystruct.models.DirectionalGridCRF</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pystruct.inference.inference_qpbo.html"
                         title="next chapter">pystruct.inference.inference_qpbo</a></p>
@@ -100,8 +165,14 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="pystruct.inference.inference_qpbo.html" title="pystruct.inference.inference_qpbo"
              >next</a> |</li>
+        <li class="right" >
+          <a href="pystruct.models.DirectionalGridCRF.html" title="pystruct.models.DirectionalGridCRF"
+             >previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
       </ul>
     </div>

@@ -26,6 +26,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
+    <link rel="next" title="pystruct.utils.SaveLogger" href="pystruct.utils.SaveLogger.html" />
     <link rel="prev" title="pystruct.inference.inference_lp" href="pystruct.inference.inference_lp.html" /> 
   </head>
   <body>
@@ -38,6 +39,12 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.utils.SaveLogger.html" title="pystruct.utils.SaveLogger"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pystruct.inference.inference_lp.html" title="pystruct.inference.inference_lp"
              accesskey="P">previous</a> |</li>
@@ -55,7 +62,50 @@
 <dl class="function">
 <dt id="pystruct.inference.inference_ad3">
 <tt class="descclassname">pystruct.inference.</tt><tt class="descname">inference_ad3</tt><big>(</big><em>unary_potentials</em>, <em>pairwise_potentials</em>, <em>edges</em>, <em>relaxed=False</em>, <em>verbose=0</em>, <em>return_energy=False</em><big>)</big><a class="headerlink" href="#pystruct.inference.inference_ad3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Inference with AD3 dual decomposition subgradient solver.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>unary_potentials</strong> : nd-array</p>
+<blockquote>
+<div><p>Unary potentials of energy function.</p>
+</div></blockquote>
+<p><strong>pairwise_potentials</strong> : nd-array</p>
+<blockquote>
+<div><p>Pairwise potentials of energy function.</p>
+</div></blockquote>
+<p><strong>edges</strong> : nd-array</p>
+<blockquote>
+<div><p>Edges of energy function.</p>
+</div></blockquote>
+<p><strong>relaxed</strong> : bool (default=False)</p>
+<blockquote>
+<div><p>Whether to return the relaxed solution (<tt class="docutils literal"><span class="pre">True</span></tt>) or round to the next
+integer solution (<tt class="docutils literal"><span class="pre">False</span></tt>).</p>
+</div></blockquote>
+<p><strong>verbose</strong> : int (default=0)</p>
+<blockquote>
+<div><p>Degree of verbosity for solver.</p>
+</div></blockquote>
+<p><strong>return_energy</strong> : bool (default=False)</p>
+<blockquote>
+<div><p>Additionally return the energy of the returned solution (according to
+the solver).  If relaxed=False, this is the energy of the relaxed, not
+the rounded solution.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>labels</strong> : nd-array</p>
+<blockquote class="last">
+<div><p>Approximate (usually) MAP variable assignment.
+If relaxed=False, this is a tuple of unary and edge &#8216;marginals&#8217;.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 
@@ -68,6 +118,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="pystruct.inference.inference_lp.html"
                         title="previous chapter">pystruct.inference.inference_lp</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pystruct.utils.SaveLogger.html"
+                        title="next chapter">pystruct.utils.SaveLogger</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/generated/pystruct.inference.inference_ad3.txt"
@@ -99,6 +152,12 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.utils.SaveLogger.html" title="pystruct.utils.SaveLogger"
+             >next</a> |</li>
         <li class="right" >
           <a href="pystruct.inference.inference_lp.html" title="pystruct.inference.inference_lp"
              >previous</a> |</li>

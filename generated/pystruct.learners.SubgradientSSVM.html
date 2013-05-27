@@ -40,6 +40,9 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="pystruct.learners.StructuredPerceptron.html" title="pystruct.learners.StructuredPerceptron"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -58,7 +61,7 @@
 <h1>pystruct.learners.SubgradientSSVM<a class="headerlink" href="#pystruct-learners-subgradientssvm" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pystruct.learners.SubgradientSSVM">
-<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">SubgradientSSVM</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>verbose=0</em>, <em>momentum=0.9</em>, <em>learning_rate=0.001</em>, <em>adagrad=False</em>, <em>n_jobs=1</em>, <em>show_loss_every=0</em>, <em>decay_exponent=0</em>, <em>break_on_no_constraints=True</em>, <em>logger=None</em>, <em>batch_size=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">SubgradientSSVM</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>verbose=0</em>, <em>momentum=0.9</em>, <em>learning_rate=0.001</em>, <em>adagrad=False</em>, <em>n_jobs=1</em>, <em>show_loss_every=0</em>, <em>decay_exponent=0</em>, <em>break_on_no_constraints=True</em>, <em>logger=None</em>, <em>batch_size=None</em>, <em>decay_t0=10</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Structured SVM solver using subgradient descent.</p>
 <blockquote>
 <div><p>Implements a margin rescaled with l1 slack penalty.
@@ -72,10 +75,10 @@ If inference is fast, use n_jobs=1.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>problem</strong> : StructuredProblem</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>model</strong> : StructuredModel</p>
 <blockquote class="last">
 <div><blockquote>
-<div><p>Object containing problem formulation. Has to implement
+<div><p>Object containing model structure. Has to implement
 <cite>loss</cite>, <cite>inference</cite> and <cite>loss_augmented_inference</cite>.</p>
 </div></blockquote>
 <dl class="docutils">
@@ -112,43 +115,26 @@ purposes). Zero means never, otherwise it will be computed very
 show_loss_every&#8217;th epoch.</p>
 </dd>
 <dt>decay_exponent <span class="classifier-delimiter">:</span> <span class="classifier">float, default=0</span></dt>
-<dd><p class="first">Exponent for decaying learning rate. Effective learning rate is
-<tt class="docutils literal"><span class="pre">learning_rate</span> <span class="pre">/</span> <span class="pre">t</span> <span class="pre">**</span> <span class="pre">decay_exponent</span></tt>. Zero means no decay.</p>
-<blockquote class="last">
-<div><p>Ignored if adagrad=True.</p>
-</div></blockquote>
+<dd><p class="first last">Exponent for decaying learning rate. Effective learning rate is
+<tt class="docutils literal"><span class="pre">learning_rate</span> <span class="pre">/</span> <span class="pre">(t0</span> <span class="pre">+</span> <span class="pre">t)**</span> <span class="pre">decay_exponent</span></tt>. Zero means no decay.
+Ignored if adagrad=True.</p>
+</dd>
+<dt>decay_t0 <span class="classifier-delimiter">:</span> <span class="classifier">float, default=10</span></dt>
+<dd><p class="first last">Offset for decaying learning rate. Effective learning rate is
+<tt class="docutils literal"><span class="pre">learning_rate</span> <span class="pre">/</span> <span class="pre">(t0</span> <span class="pre">+</span> <span class="pre">t)**</span> <span class="pre">decay_exponent</span></tt>. Zero means no decay.
+Ignored if adagrad=True.</p>
 </dd>
 <dt>break_on_no_constraints <span class="classifier-delimiter">:</span> <span class="classifier">bool, default=True</span></dt>
 <dd><p class="first last">Break when there are no new constraints found.</p>
 </dd>
 </dl>
+<p>logger : logger object.</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="19%" />
-<col width="29%" />
-<col width="51%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>w</td>
-<td>nd-array, shape=(problem.psi,)</td>
-<td>The learned weights of the SVM.</td>
-</tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">loss_curve_</span></tt></td>
-<td>list of float</td>
-<td>List of loss values if show_loss_every &gt; 0.</td>
-</tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">objective_curve_</span></tt></td>
-<td>list of float</td>
-<td>Primal objective after each pass through the dataset.</td>
-</tr>
-</tbody>
-</table>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -156,7 +142,7 @@ show_loss_every&#8217;th epoch.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pystruct.learners.SubgradientSSVM.fit" title="pystruct.learners.SubgradientSSVM.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(X,&nbsp;Y[,&nbsp;constraints])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pystruct.learners.SubgradientSSVM.fit" title="pystruct.learners.SubgradientSSVM.fit"><tt class="xref py py-obj docutils literal"><span class="pre">fit</span></tt></a>(X,&nbsp;Y[,&nbsp;constraints,&nbsp;warm_start])</td>
 <td>Learn parameters using subgradient descent.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pystruct.learners.SubgradientSSVM.get_params" title="pystruct.learners.SubgradientSSVM.get_params"><tt class="xref py py-obj docutils literal"><span class="pre">get_params</span></tt></a>([deep])</td>
@@ -175,12 +161,12 @@ show_loss_every&#8217;th epoch.</p>
 </table>
 <dl class="method">
 <dt id="pystruct.learners.SubgradientSSVM.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>problem</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>verbose=0</em>, <em>momentum=0.9</em>, <em>learning_rate=0.001</em>, <em>adagrad=False</em>, <em>n_jobs=1</em>, <em>show_loss_every=0</em>, <em>decay_exponent=0</em>, <em>break_on_no_constraints=True</em>, <em>logger=None</em>, <em>batch_size=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>verbose=0</em>, <em>momentum=0.9</em>, <em>learning_rate=0.001</em>, <em>adagrad=False</em>, <em>n_jobs=1</em>, <em>show_loss_every=0</em>, <em>decay_exponent=0</em>, <em>break_on_no_constraints=True</em>, <em>logger=None</em>, <em>batch_size=None</em>, <em>decay_t0=10</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pystruct.learners.SubgradientSSVM.fit">
-<tt class="descname">fit</tt><big>(</big><em>X</em>, <em>Y</em>, <em>constraints=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.fit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fit</tt><big>(</big><em>X</em>, <em>Y</em>, <em>constraints=None</em>, <em>warm_start=False</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Learn parameters using subgradient descent.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -197,8 +183,12 @@ No requirement on the particular form of entries of X is made.</p>
 Needs to have the same length as X.</p>
 </div></blockquote>
 <p><strong>constraints</strong> : None</p>
-<blockquote class="last">
+<blockquote>
 <div><p>Discarded. Only for API compatibility currently.</p>
+</div></blockquote>
+<p><strong>warm_start</strong> : boolean, default=False</p>
+<blockquote class="last">
+<div><p>Whether to restart a previous fit.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -258,7 +248,7 @@ X : iterable</p>
 <dt id="pystruct.learners.SubgradientSSVM.score">
 <tt class="descname">score</tt><big>(</big><em>X</em>, <em>Y</em><big>)</big><a class="headerlink" href="#pystruct.learners.SubgradientSSVM.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute score as 1 - loss over whole data set.</p>
-<p>Returns the average accuracy (in terms of problem.loss)
+<p>Returns the average accuracy (in terms of model.loss)
 over X and Y.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -348,6 +338,9 @@ component of a nested object.</p>
              >index</a></li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="pystruct.learners.StructuredPerceptron.html" title="pystruct.learners.StructuredPerceptron"

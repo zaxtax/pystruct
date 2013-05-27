@@ -1,0 +1,189 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pystruct.utils.SaveLogger &mdash; pystruct 0.1-alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1-alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
+    <link rel="prev" title="pystruct.inference.inference_ad3" href="pystruct.inference.inference_ad3.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.inference.inference_ad3.html" title="pystruct.inference.inference_ad3"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pystruct-utils-savelogger">
+<h1>pystruct.utils.SaveLogger<a class="headerlink" href="#pystruct-utils-savelogger" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pystruct.utils.SaveLogger">
+<em class="property">class </em><tt class="descclassname">pystruct.utils.</tt><tt class="descname">SaveLogger</tt><big>(</big><em>file_name</em>, <em>save_every=10</em>, <em>verbose=0</em><big>)</big><a class="reference internal" href="../_modules/pystruct/utils.html#SaveLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pystruct.utils.SaveLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging class that stores the model periodically.</p>
+<p>Can be used to back up a model during learning.
+Also a prototype to demonstrate the logging interface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>file_name</strong> : string</p>
+<blockquote>
+<div><p>File in which the model will be stored. If the string contains
+&#8216;%d&#8217;, this will be replaced with the current iteration.</p>
+</div></blockquote>
+<p><strong>save_every</strong> : int (default=10)</p>
+<blockquote>
+<div><p>How often the model should be stored (in iterations).</p>
+</div></blockquote>
+<p><strong>verbose</strong> : int (default=0)</p>
+<blockquote class="last">
+<div><p>Verbosity level.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pystruct.utils.SaveLogger.load" title="pystruct.utils.SaveLogger.load"><tt class="xref py py-obj docutils literal"><span class="pre">load</span></tt></a>()</td>
+<td>Load the model stoed in file_name and return it.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pystruct.utils.SaveLogger.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>file_name</em>, <em>save_every=10</em>, <em>verbose=0</em><big>)</big><a class="reference internal" href="../_modules/pystruct/utils.html#SaveLogger.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pystruct.utils.SaveLogger.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pystruct.utils.SaveLogger.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>learner</em>, <em>iteration=0</em><big>)</big><a class="reference internal" href="../_modules/pystruct/utils.html#SaveLogger.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pystruct.utils.SaveLogger.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save learner if iterations is a multiple of save_every or &#8220;final&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>learner</strong> : object</p>
+<blockquote>
+<div><p>Learning object to be saved.</p>
+</div></blockquote>
+<p><strong>iteration</strong> : int or &#8216;final&#8217; (default=0)</p>
+<blockquote class="last">
+<div><p>If &#8216;final&#8217; or save_every % iteration == 0,
+the model will be saved.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pystruct.utils.SaveLogger.load">
+<tt class="descname">load</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/pystruct/utils.html#SaveLogger.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pystruct.utils.SaveLogger.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the model stoed in file_name and return it.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pystruct.inference.inference_ad3.html"
+                        title="previous chapter">pystruct.inference.inference_ad3</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/generated/pystruct.utils.SaveLogger.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pystruct.inference.inference_ad3.html" title="pystruct.inference.inference_ad3"
+             >previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Andreas Mueller.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
