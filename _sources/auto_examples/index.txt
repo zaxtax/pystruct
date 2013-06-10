@@ -104,6 +104,29 @@ Examples
     <div class="thumbnailContainer">
 
 
+.. figure:: ./images/thumb/plot_latent_crf.png
+   :target: ./plot_latent_crf.html
+
+   :ref:`plot_latent_crf.py`
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   ./plot_latent_crf
+
+
+
+.. raw:: html
+
+    <div class="thumbnailContainer">
+
+
 .. figure:: ./images/thumb/latent_svm_as_crf.png
    :target: ./latent_svm_as_crf.html
 
@@ -127,10 +150,10 @@ Examples
     <div class="thumbnailContainer">
 
 
-.. figure:: ./images/thumb/grid_crf.png
-   :target: ./grid_crf.html
+.. figure:: ./images/thumb/plot_directional_grid.png
+   :target: ./plot_directional_grid.html
 
-   :ref:`grid_crf.py`
+   :ref:`plot_directional_grid.py`
 
 
 .. raw:: html
@@ -141,7 +164,7 @@ Examples
 .. toctree::
    :hidden:
 
-   ./grid_crf
+   ./plot_directional_grid
 
 
 
@@ -150,33 +173,10 @@ Examples
     <div class="thumbnailContainer">
 
 
-.. figure:: ./images/thumb/latent_crf.png
-   :target: ./latent_crf.html
+.. figure:: ./images/thumb/plot_grid_crf.png
+   :target: ./plot_grid_crf.html
 
-   :ref:`latent_crf.py`
-
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   ./latent_crf
-
-
-
-.. raw:: html
-
-    <div class="thumbnailContainer">
-
-
-.. figure:: ./images/thumb/binary_svm.png
-   :target: ./binary_svm.html
-
-   :ref:`binary_svm.py`
+   :ref:`plot_grid_crf.py`
 
 
 .. raw:: html
@@ -187,7 +187,7 @@ Examples
 .. toctree::
    :hidden:
 
-   ./binary_svm
+   ./plot_grid_crf
 
 
 
@@ -211,6 +211,29 @@ Examples
    :hidden:
 
    ./multi_class_svm
+
+
+
+.. raw:: html
+
+    <div class="thumbnailContainer">
+
+
+.. figure:: ./images/thumb/plot_binary_svm.png
+   :target: ./plot_binary_svm.html
+
+   :ref:`plot_binary_svm.py`
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   ./plot_binary_svm
 
 
 

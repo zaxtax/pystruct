@@ -61,7 +61,7 @@
 <h1>pystruct.models.LatentNodeCRF<a class="headerlink" href="#pystruct-models-latentnodecrf" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pystruct.models.LatentNodeCRF">
-<em class="property">class </em><tt class="descclassname">pystruct.models.</tt><tt class="descname">LatentNodeCRF</tt><big>(</big><em>n_labels=2</em>, <em>n_features=None</em>, <em>n_hidden_states=2</em>, <em>inference_method='lp'</em>, <em>class_weight=None</em><big>)</big><a class="headerlink" href="#pystruct.models.LatentNodeCRF" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pystruct.models.</tt><tt class="descname">LatentNodeCRF</tt><big>(</big><em>n_labels=2</em>, <em>n_features=None</em>, <em>n_hidden_states=2</em>, <em>inference_method='lp'</em>, <em>class_weight=None</em>, <em>latent_node_features=False</em><big>)</big><a class="headerlink" href="#pystruct.models.LatentNodeCRF" title="Permalink to this definition">¶</a></dt>
 <dd><p>CRF with latent variables.</p>
 <p>Input x is tuple (features, edges, n_hidden)
 First features.shape[0] nodes are observed, then n_hidden unobserved nodes.</p>
@@ -96,9 +96,14 @@ Possible values are:</p>
 </div></blockquote>
 </div></blockquote>
 <p><strong>class_weight</strong> : None, or array-like</p>
-<blockquote class="last">
+<blockquote>
 <div><p>Class weights. If an array-like is passed, it must have length
 n_classes. None means equal class weights.</p>
+</div></blockquote>
+<p><strong>latent_node_features</strong> : bool, default=False</p>
+<blockquote class="last">
+<div><p>Whether latent nodes have features. We assume that if True,
+the number of features is the same as for visible nodes.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -169,7 +174,7 @@ n_classes. None means equal class weights.</p>
 </table>
 <dl class="method">
 <dt id="pystruct.models.LatentNodeCRF.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>n_labels=2</em>, <em>n_features=None</em>, <em>n_hidden_states=2</em>, <em>inference_method='lp'</em>, <em>class_weight=None</em><big>)</big><a class="headerlink" href="#pystruct.models.LatentNodeCRF.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>n_labels=2</em>, <em>n_features=None</em>, <em>n_hidden_states=2</em>, <em>inference_method='lp'</em>, <em>class_weight=None</em>, <em>latent_node_features=False</em><big>)</big><a class="headerlink" href="#pystruct.models.LatentNodeCRF.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

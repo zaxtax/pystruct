@@ -61,7 +61,7 @@
 <h1>pystruct.learners.PrimalDSStructuredSVM<a class="headerlink" href="#pystruct-learners-primaldsstructuredsvm" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pystruct.learners.PrimalDSStructuredSVM">
-<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">PrimalDSStructuredSVM</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pystruct.learners.</tt><tt class="descname">PrimalDSStructuredSVM</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>verbose=0</em>, <em>n_jobs=1</em>, <em>show_loss_every=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses downhill simplex for optimizing an unconstraint primal.</p>
 <p>This is basically a sanity check on all other implementations,
 as this is easier to check for correctness.</p>
@@ -81,20 +81,17 @@ as this is easier to check for correctness.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#pystruct.learners.PrimalDSStructuredSVM.predict" title="pystruct.learners.PrimalDSStructuredSVM.predict"><tt class="xref py py-obj docutils literal"><span class="pre">predict</span></tt></a>(X)</td>
 <td>Predict output on examples in X.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">prune_constraints</span></tt>(constraints,&nbsp;a)</td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pystruct.learners.PrimalDSStructuredSVM.score" title="pystruct.learners.PrimalDSStructuredSVM.score"><tt class="xref py py-obj docutils literal"><span class="pre">score</span></tt></a>(X,&nbsp;Y)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pystruct.learners.PrimalDSStructuredSVM.score" title="pystruct.learners.PrimalDSStructuredSVM.score"><tt class="xref py py-obj docutils literal"><span class="pre">score</span></tt></a>(X,&nbsp;Y)</td>
 <td>Compute score as 1 - loss over whole data set.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pystruct.learners.PrimalDSStructuredSVM.set_params" title="pystruct.learners.PrimalDSStructuredSVM.set_params"><tt class="xref py py-obj docutils literal"><span class="pre">set_params</span></tt></a>(**params)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pystruct.learners.PrimalDSStructuredSVM.set_params" title="pystruct.learners.PrimalDSStructuredSVM.set_params"><tt class="xref py py-obj docutils literal"><span class="pre">set_params</span></tt></a>(**params)</td>
 <td>Set the parameters of the estimator.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="pystruct.learners.PrimalDSStructuredSVM.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>check_constraints=True</em>, <em>verbose=1</em>, <em>positive_constraint=None</em>, <em>n_jobs=1</em>, <em>break_on_bad=True</em>, <em>show_loss_every=0</em>, <em>batch_size=100</em>, <em>tol=-10</em>, <em>inactive_threshold=1e-10</em>, <em>inactive_window=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>model</em>, <em>max_iter=100</em>, <em>C=1.0</em>, <em>verbose=0</em>, <em>n_jobs=1</em>, <em>show_loss_every=0</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#pystruct.learners.PrimalDSStructuredSVM.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

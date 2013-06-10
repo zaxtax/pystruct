@@ -27,8 +27,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
     <link rel="up" title="Examples" href="index.html" />
-    <link rel="next" title="Learning interactions on a 2d grid" href="grid_crf.html" />
-    <link rel="prev" title="SVM objective values" href="svm_objectives.html" /> 
+    <link rel="next" title="Learning directed interactions on a 2d grid" href="plot_directional_grid.html" />
+    <link rel="prev" title="Latent Dynamics CRF" href="plot_latent_crf.html" /> 
   </head>
   <body>
     <div class="related">
@@ -44,10 +44,10 @@
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="grid_crf.html" title="Learning interactions on a 2d grid"
+          <a href="plot_directional_grid.html" title="Learning directed interactions on a 2d grid"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="svm_objectives.html" title="SVM objective values"
+          <a href="plot_latent_crf.html" title="Latent Dynamics CRF"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Examples</a> &raquo;</li> 
@@ -73,7 +73,7 @@ inference procedure.</p>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
 
 <span class="kn">from</span> <span class="nn">pystruct.models</span> <span class="kn">import</span> <span class="n">GraphCRF</span><span class="p">,</span> <span class="n">LatentGraphCRF</span>
-<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">StructuredSVM</span><span class="p">,</span> <span class="n">LatentSubgradientSSVM</span>
+<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">NSlackSSVM</span><span class="p">,</span> <span class="n">LatentSubgradientSSVM</span>
 
 <span class="c"># do a binary digit classification</span>
 <span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
@@ -93,8 +93,8 @@ inference procedure.</p>
 
 <span class="c"># first, do it with a standard CRF / SVM</span>
 <span class="n">pbl</span> <span class="o">=</span> <span class="n">GraphCRF</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">inference_method</span><span class="o">=</span><span class="s">&#39;lp&#39;</span><span class="p">)</span>
-<span class="n">svm</span> <span class="o">=</span> <span class="n">StructuredSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="n">batch_size</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">svm</span> <span class="o">=</span> <span class="n">NSlackSSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">batch_size</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">svm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_</span><span class="p">))</span>
@@ -128,11 +128,11 @@ inference procedure.</p>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="svm_objectives.html"
-                        title="previous chapter">SVM objective values</a></p>
+  <p class="topless"><a href="plot_latent_crf.html"
+                        title="previous chapter">Latent Dynamics CRF</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="grid_crf.html"
-                        title="next chapter">Learning interactions on a 2d grid</a></p>
+  <p class="topless"><a href="plot_directional_grid.html"
+                        title="next chapter">Learning directed interactions on a 2d grid</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/auto_examples/latent_svm_as_crf.txt"
@@ -168,10 +168,10 @@ inference procedure.</p>
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="grid_crf.html" title="Learning interactions on a 2d grid"
+          <a href="plot_directional_grid.html" title="Learning directed interactions on a 2d grid"
              >next</a> |</li>
         <li class="right" >
-          <a href="svm_objectives.html" title="SVM objective values"
+          <a href="plot_latent_crf.html" title="Latent Dynamics CRF"
              >previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="index.html" >Examples</a> &raquo;</li> 

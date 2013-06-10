@@ -1,0 +1,49 @@
+
+
+.. _plot_latent_crf.py:
+
+
+===================
+Latent Dynamics CRF
+===================
+
+Solving a 2d grid problem by introducing latent variable interactions.
+The input data is the same as in plot_grid_crf, a cross pattern.
+But now, the center is not given an extra state. That makes the problem
+much harder to solve for a pairwise model.
+We can still solve it by introducing latent dynamics. In essence we allow
+an additional state with different interactions, that maps to the same
+state (the cross) in the ground truth.
+
+
+
+
+.. image:: images/plot_latent_crf_1.png
+    :align: center
+
+
+**Script output**::
+
+  LATENT SVM ITERATION 0
+  Training 1-slack dual structural SVM
+  new constraint too weak.
+  new constraint too weak.
+  new constraint too weak.
+  new constraint too weak.
+  new constraint too weak.
+  new constraint too weak.
+  no additional constraints
+  LATENT SVM ITERATION 1
+  no changes in latent variables of ground truth. stopping.
+  loss training set: 1.000000
+  loss test set: 0.995313
+
+
+
+**Python source code:** :download:`plot_latent_crf.py <plot_latent_crf.py>`
+
+.. literalinclude:: plot_latent_crf.py
+    :lines: 15-
+
+**Total running time of the example:**  5.65 seconds
+    

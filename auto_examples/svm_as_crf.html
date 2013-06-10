@@ -71,7 +71,7 @@ Evaluation on iris dataset (really easy).</p>
 <span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
 <span class="kn">from</span> <span class="nn">pystruct.models</span> <span class="kn">import</span> <span class="n">GraphCRF</span>
-<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">StructuredSVM</span>
+<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">NSlackSSVM</span>
 
 <span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
@@ -84,7 +84,7 @@ Evaluation on iris dataset (really easy).</p>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
 <span class="n">pbl</span> <span class="o">=</span> <span class="n">GraphCRF</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n_states</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">inference_method</span><span class="o">=</span><span class="s">&#39;lp&#39;</span><span class="p">)</span>
-<span class="n">svm</span> <span class="o">=</span> <span class="n">StructuredSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">svm</span> <span class="o">=</span> <span class="n">NSlackSSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>

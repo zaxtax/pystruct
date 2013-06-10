@@ -1,0 +1,45 @@
+
+
+.. _plot_binary_svm.py:
+
+
+==================
+Binary SVM as SSVM
+==================
+Example of training binary SVM using n-slack QP, 1-slack QP, SGD and
+SMO (libsvm). Our 1-slack QP does surprisingly well.
+
+There are many parameters to tune and we can make 1-slack as good as the rest
+for the price of higher runtime, we can also try to make the others faster.
+We don't really have a chance to beat LibSVM but that's ok ;)
+
+
+
+
+.. image:: images/plot_binary_svm_1.png
+    :align: center
+
+
+**Script output**::
+
+  Training n-slack dual structural SVM
+  no additional constraints
+  Score with pystruct n-slack ssvm: 0.922222 (took 3.865545 seconds)
+  Training 1-slack dual structural SVM
+  new constraint too weak.
+  no additional constraints
+  Score with pystruct 1-slack ssvm: 0.908889 (took 0.203659 seconds)
+  Training primal subgradient structural SVM
+  final objective: 2421.468743
+  Score with pystruct subgradient ssvm: 0.908889 (took 1.900476 seconds)
+  Score with sklearn and libsvm: 0.920000 (took 0.143827 seconds)
+
+
+
+**Python source code:** :download:`plot_binary_svm.py <plot_binary_svm.py>`
+
+.. literalinclude:: plot_binary_svm.py
+    :lines: 13-
+
+**Total running time of the example:**  6.40 seconds
+    

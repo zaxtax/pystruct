@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Learning interactions on a 2d grid &mdash; pystruct 0.1-alpha documentation</title>
+    <title>Learning directed interactions on a 2d grid &mdash; pystruct 0.1-alpha documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
     <link rel="up" title="Examples" href="index.html" />
-    <link rel="next" title="Crammer-Singer Multi-Class SVM" href="multi_class_svm.html" />
-    <link rel="prev" title="Learning directed interactions on a 2d grid" href="plot_directional_grid.html" /> 
+    <link rel="next" title="Learning interactions on a 2d grid" href="plot_grid_crf.html" />
+    <link rel="prev" title="Latent SVM" href="latent_svm_as_crf.html" /> 
   </head>
   <body>
     <div class="related">
@@ -44,10 +44,10 @@
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="multi_class_svm.html" title="Crammer-Singer Multi-Class SVM"
+          <a href="plot_grid_crf.html" title="Learning interactions on a 2d grid"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="plot_directional_grid.html" title="Learning directed interactions on a 2d grid"
+          <a href="latent_svm_as_crf.html" title="Latent SVM"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Examples</a> &raquo;</li> 
@@ -59,17 +59,18 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="learning-interactions-on-a-2d-grid">
-<span id="plot-grid-crf-py"></span><h1>Learning interactions on a 2d grid<a class="headerlink" href="#learning-interactions-on-a-2d-grid" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="learning-directed-interactions-on-a-2d-grid">
+<span id="plot-directional-grid-py"></span><h1>Learning directed interactions on a 2d grid<a class="headerlink" href="#learning-directed-interactions-on-a-2d-grid" title="Permalink to this headline">¶</a></h1>
 <p>Simple pairwise model with arbitrary interactions on a 4-connected grid.
-The inputs contain a cross pattern with a separate state for the center.
-The crosses are placed randomly in the image and noise is added.</p>
-<p>The center state is not encoded in the input, so that the task can not be
-solved without pairwise interactions.</p>
+There are different pairwise potentials for the four directions.
+All the examples are basically the same, three vertical stripes.
+Only the noise differs.
+The CRF learns that it can smooth strongly along the vertical axis and that
+there is a specific order in the horizontal direction (see off-diagonal).</p>
 <ul class="horizontal">
-<li><a class="first reference internal image-reference" href="../_images/plot_grid_crf_1.png"><img alt="../_images/plot_grid_crf_1.png" src="../_images/plot_grid_crf_1.png" style="width: 564.0px; height: 188.0px;" /></a>
+<li><a class="first reference internal image-reference" href="../_images/plot_directional_grid_1.png"><img alt="../_images/plot_directional_grid_1.png" src="../_images/plot_directional_grid_1.png" style="width: 564.0px; height: 188.0px;" /></a>
 </li>
-<li><a class="first reference internal image-reference" href="../_images/plot_grid_crf_2.png"><img alt="../_images/plot_grid_crf_2.png" src="../_images/plot_grid_crf_2.png" style="width: 376.0px; height: 188.0px;" /></a>
+<li><a class="first reference internal image-reference" href="../_images/plot_directional_grid_2.png"><img alt="../_images/plot_directional_grid_2.png" src="../_images/plot_directional_grid_2.png" style="width: 564.0px; height: 188.0px;" /></a>
 </li>
 </ul>
 <p><strong>Script output</strong>:</p>
@@ -79,26 +80,26 @@ new constraint too weak.
 new constraint too weak.
 new constraint too weak.
 no additional constraints
-overall accuracy (training set): 0.977284</pre>
+overall accuracy (training set): 0.954167</pre>
 </div>
-<p><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/plot_grid_crf.py"><tt class="xref download docutils literal"><span class="pre">plot_grid_crf.py</span></tt></a></p>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/plot_directional_grid.py"><tt class="xref download docutils literal"><span class="pre">plot_directional_grid.py</span></tt></a></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
-<span class="kn">from</span> <span class="nn">pystruct.models</span> <span class="kn">import</span> <span class="n">GridCRF</span>
+<span class="kn">from</span> <span class="nn">pystruct.models</span> <span class="kn">import</span> <span class="n">DirectionalGridCRF</span>
 <span class="kn">import</span> <span class="nn">pystruct.learners</span> <span class="kn">as</span> <span class="nn">ssvm</span>
 <span class="kn">import</span> <span class="nn">pystruct.toy_datasets</span> <span class="kn">as</span> <span class="nn">toy</span>
 
 
-<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">toy</span><span class="o">.</span><span class="n">generate_crosses_explicit</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">toy</span><span class="o">.</span><span class="n">generate_blocks_multinomial</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">n_labels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.unique.html#numpy.unique"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
-<span class="n">crf</span> <span class="o">=</span> <span class="n">GridCRF</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">n_labels</span><span class="p">,</span> <span class="n">inference_method</span><span class="o">=</span><span class="s">&quot;lp&quot;</span><span class="p">,</span> <span class="n">neighborhood</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">clf</span> <span class="o">=</span> <span class="n">ssvm</span><span class="o">.</span><span class="n">OneSlackSSVM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">crf</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                        <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">inference_cache</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                        <span class="n">inactive_window</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">tol</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">crf</span> <span class="o">=</span> <span class="n">DirectionalGridCRF</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="n">n_labels</span><span class="p">,</span> <span class="n">inference_method</span><span class="o">=</span><span class="s">&quot;qpbo&quot;</span><span class="p">,</span>
+                         <span class="n">neighborhood</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">ssvm</span><span class="o">.</span><span class="n">OneSlackSSVM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">crf</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">inference_cache</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">inactive_window</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">tol</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 <span class="n">Y_pred</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.array.html#numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
-
 <span class="k">print</span><span class="p">(</span><span class="s">&quot;overall accuracy (training set): </span><span class="si">%f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span>
 
 <span class="c"># plot one example</span>
@@ -120,24 +121,21 @@ overall accuracy (training set): 0.977284</pre>
     <span class="n">p</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(())</span>
 
 <span class="c"># visualize weights</span>
-<span class="n">w_un</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">w</span><span class="p">[:</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="c"># decode the symmetric pairwise potential</span>
-<span class="n">w_pw</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.zeros.html#numpy.zeros"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="n">crf</span><span class="o">.</span><span class="n">n_states</span><span class="p">,</span> <span class="n">crf</span><span class="o">.</span><span class="n">n_states</span><span class="p">))</span>
-<span class="n">w_pw</span><span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.tri.html#numpy.tri"><span class="n">np</span><span class="o">.</span><span class="n">tri</span></a><span class="p">(</span><span class="n">crf</span><span class="o">.</span><span class="n">n_states</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)]</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span><span class="p">:]</span>
-<span class="n">w_pw</span> <span class="o">=</span> <span class="n">w_pw</span> <span class="o">+</span> <span class="n">w_pw</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.diag.html#numpy.diag"><span class="n">np</span><span class="o">.</span><span class="n">diag</span></a><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.diag.html#numpy.diag"><span class="n">np</span><span class="o">.</span><span class="n">diag</span></a><span class="p">(</span><span class="n">w_pw</span><span class="p">))</span>
-
-<a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <span class="n">plots</span> <span class="o">=</span> <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">w_un</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <span class="n">plots</span> <span class="o">=</span> <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Unary weights&quot;</span><span class="p">)</span>
-<span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">w_pw</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Pairwise weights&quot;</span><span class="p">)</span>
+<span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Horizontal weights&quot;</span><span class="p">)</span>
+<span class="n">plots</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plots</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Vertical weights&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">plots</span><span class="p">:</span>
     <span class="n">p</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(())</span>
     <span class="n">p</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(())</span>
 <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the example:</strong>  28.96 seconds</p>
+<p><strong>Total running time of the example:</strong>  8.80 seconds</p>
 </div>
 
 
@@ -147,14 +145,14 @@ overall accuracy (training set): 0.977284</pre>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="plot_directional_grid.html"
-                        title="previous chapter">Learning directed interactions on a 2d grid</a></p>
+  <p class="topless"><a href="latent_svm_as_crf.html"
+                        title="previous chapter">Latent SVM</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="multi_class_svm.html"
-                        title="next chapter">Crammer-Singer Multi-Class SVM</a></p>
+  <p class="topless"><a href="plot_grid_crf.html"
+                        title="next chapter">Learning interactions on a 2d grid</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="../_sources/auto_examples/plot_grid_crf.txt"
+    <li><a href="../_sources/auto_examples/plot_directional_grid.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -187,10 +185,10 @@ overall accuracy (training set): 0.977284</pre>
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="multi_class_svm.html" title="Crammer-Singer Multi-Class SVM"
+          <a href="plot_grid_crf.html" title="Learning interactions on a 2d grid"
              >next</a> |</li>
         <li class="right" >
-          <a href="plot_directional_grid.html" title="Learning directed interactions on a 2d grid"
+          <a href="latent_svm_as_crf.html" title="Latent SVM"
              >previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="index.html" >Examples</a> &raquo;</li> 

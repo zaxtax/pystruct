@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Binary SVM as SSVM &mdash; pystruct 0.1-alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1-alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
+    <link rel="up" title="Examples" href="index.html" />
+    <link rel="next" title="Latent Variable Hierarchical CRF" href="latent_node.html" />
+    <link rel="prev" title="Crammer-Singer Multi-Class SVM" href="multi_class_svm.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="latent_node.html" title="Latent Variable Hierarchical CRF"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="multi_class_svm.html" title="Crammer-Singer Multi-Class SVM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Examples</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="binary-svm-as-ssvm">
+<span id="plot-binary-svm-py"></span><h1>Binary SVM as SSVM<a class="headerlink" href="#binary-svm-as-ssvm" title="Permalink to this headline">¶</a></h1>
+<p>Example of training binary SVM using n-slack QP, 1-slack QP, SGD and
+SMO (libsvm). Our 1-slack QP does surprisingly well.</p>
+<p>There are many parameters to tune and we can make 1-slack as good as the rest
+for the price of higher runtime, we can also try to make the others faster.
+We don&#8217;t really have a chance to beat LibSVM but that&#8217;s ok ;)</p>
+<img alt="../_images/plot_binary_svm_1.png" class="align-center" src="../_images/plot_binary_svm_1.png" />
+<p><strong>Script output</strong>:</p>
+<div class="highlight-python"><pre>Training n-slack dual structural SVM
+no additional constraints
+Score with pystruct n-slack ssvm: 0.922222 (took 3.865545 seconds)
+Training 1-slack dual structural SVM
+new constraint too weak.
+no additional constraints
+Score with pystruct 1-slack ssvm: 0.908889 (took 0.203659 seconds)
+Training primal subgradient structural SVM
+final objective: 2421.468743
+Score with pystruct subgradient ssvm: 0.908889 (took 1.900476 seconds)
+Score with sklearn and libsvm: 0.920000 (took 0.143827 seconds)</pre>
+</div>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/plot_binary_svm.py"><tt class="xref download docutils literal"><span class="pre">plot_binary_svm.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">__doc__</span>
+
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
+<span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+
+<span class="kn">from</span> <span class="nn">pystruct.models</span> <span class="kn">import</span> <span class="n">BinarySVMModel</span>
+<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="p">(</span><span class="n">NSlackSSVM</span><span class="p">,</span> <span class="n">OneSlackSSVM</span><span class="p">,</span>
+                               <span class="n">SubgradientSSVM</span><span class="p">)</span>
+
+<span class="c"># do a binary digit classification</span>
+<span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c"># make binary task by doing odd vs even numers</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">%</span> <span class="mi">2</span>
+<span class="c"># code as +1 and -1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">X</span> <span class="o">/=</span> <span class="n">X</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">pbl</span> <span class="o">=</span> <span class="n">BinarySVMModel</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c"># add one for bias</span>
+<span class="n">n_slack_svm</span> <span class="o">=</span> <span class="n">NSlackSSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">check_constraints</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                         <span class="n">batch_size</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">one_slack_svm</span> <span class="o">=</span> <span class="n">OneSlackSSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">check_constraints</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                             <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">subgradient_svm</span> <span class="o">=</span> <span class="n">SubgradientSSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                  <span class="n">decay_exponent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c"># we add a constant 1 feature for the bias</span>
+<span class="n">X_train_bias</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.hstack.html#numpy.hstack"><span class="n">np</span><span class="o">.</span><span class="n">hstack</span></a><span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.ones.html#numpy.ones"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">((</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))])</span>
+<span class="n">X_test_bias</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.hstack.html#numpy.hstack"><span class="n">np</span><span class="o">.</span><span class="n">hstack</span></a><span class="p">([</span><span class="n">X_test</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.ones.html#numpy.ones"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">((</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))])</span>
+
+<span class="c"># n-slack cutting plane ssvm</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">n_slack_svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_bias</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">time_n_slack_svm</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="n">acc_n_slack</span> <span class="o">=</span> <span class="n">n_slack_svm</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_bias</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Score with pystruct n-slack ssvm: </span><span class="si">%f</span><span class="s"> (took </span><span class="si">%f</span><span class="s"> seconds)&quot;</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">acc_n_slack</span><span class="p">,</span> <span class="n">time_n_slack_svm</span><span class="p">))</span>
+
+<span class="c">## 1-slack cutting plane ssvm</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">one_slack_svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_bias</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">time_one_slack_svm</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="n">acc_one_slack</span> <span class="o">=</span> <span class="n">one_slack_svm</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_bias</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Score with pystruct 1-slack ssvm: </span><span class="si">%f</span><span class="s"> (took </span><span class="si">%f</span><span class="s"> seconds)&quot;</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">acc_one_slack</span><span class="p">,</span> <span class="n">time_one_slack_svm</span><span class="p">))</span>
+
+<span class="c"># online subgradient ssvm</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">subgradient_svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_bias</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">time_subgradient_svm</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="n">acc_subgradient</span> <span class="o">=</span> <span class="n">subgradient_svm</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_bias</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Score with pystruct subgradient ssvm: </span><span class="si">%f</span><span class="s"> (took </span><span class="si">%f</span><span class="s"> seconds)&quot;</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">acc_subgradient</span><span class="p">,</span> <span class="n">time_subgradient_svm</span><span class="p">))</span>
+
+<span class="n">libsvm</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">libsvm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">time_libsvm</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="n">acc_libsvm</span> <span class="o">=</span> <span class="n">libsvm</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Score with sklearn and libsvm: </span><span class="si">%f</span><span class="s"> (took </span><span class="si">%f</span><span class="s"> seconds)&quot;</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">acc_libsvm</span><span class="p">,</span> <span class="n">time_libsvm</span><span class="p">))</span>
+
+<span class="c"># plot the results</span>
+<a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="p">[</span><span class="n">time_n_slack_svm</span><span class="p">,</span> <span class="n">time_one_slack_svm</span><span class="p">,</span>
+                     <span class="n">time_subgradient_svm</span><span class="p">,</span> <span class="n">time_libsvm</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.arange.html#numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s">&quot;n-slack&quot;</span><span class="p">,</span> <span class="s">&quot;1-slack&quot;</span><span class="p">,</span> <span class="s">&quot;subgradient&quot;</span><span class="p">,</span> <span class="s">&quot;libsvm&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;runtime (s)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Run times&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Accuracies&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="p">[</span><span class="n">acc_n_slack</span><span class="p">,</span> <span class="n">acc_one_slack</span><span class="p">,</span>
+                     <span class="n">acc_subgradient</span><span class="p">,</span> <span class="n">acc_libsvm</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.arange.html#numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s">&quot;n-slack&quot;</span><span class="p">,</span> <span class="s">&quot;1-slack&quot;</span><span class="p">,</span> <span class="s">&quot;subgradient&quot;</span><span class="p">,</span> <span class="s">&quot;libsvm&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="o">.</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;accuracy&quot;</span><span class="p">)</span>
+
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the example:</strong>  6.40 seconds</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="multi_class_svm.html"
+                        title="previous chapter">Crammer-Singer Multi-Class SVM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="latent_node.html"
+                        title="next chapter">Latent Variable Hierarchical CRF</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/auto_examples/plot_binary_svm.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="latent_node.html" title="Latent Variable Hierarchical CRF"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="multi_class_svm.html" title="Crammer-Singer Multi-Class SVM"
+             >previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
+          <li><a href="index.html" >Examples</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Andreas Mueller.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

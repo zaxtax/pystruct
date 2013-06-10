@@ -133,7 +133,7 @@ constraints can be found using the previous solver (which should be a faster und
 Most are based on structured support vector machines.</p>
 <p>Currently, I advise to use the OneSlackSSVM, which solves the QP using CVXOPT.
 SubgradientSSVM is a very simple implementation, that also might be interesting.</p>
-<p>StructuredSVM is the n-slack formulation of the QP and should work reliably,
+<p>NSlackSSVM is the n-slack formulation of the QP and should work reliably,
 but is not as optimized as OneSlackSSVM.
 The rest is experimental / for testing.</p>
 <span class="target" id="module-pystruct.learners"></span><table border="1" class="longtable docutils">
@@ -145,7 +145,7 @@ The rest is experimental / for testing.</p>
 <tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.OneSlackSSVM.html#pystruct.learners.OneSlackSSVM" title="pystruct.learners.OneSlackSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.OneSlackSSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;C,&nbsp;...])</td>
 <td>Structured SVM solver for the 1-slack QP with l1 slack penalty.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.StructuredSVM.html#pystruct.learners.StructuredSVM" title="pystruct.learners.StructuredSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.StructuredSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;C,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/pystruct.learners.NSlackSSVM.html#pystruct.learners.NSlackSSVM" title="pystruct.learners.NSlackSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.NSlackSSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;C,&nbsp;...])</td>
 <td>Structured SVM solver for the n-slack QP with l1 slack penalty.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/pystruct.learners.SubgradientSSVM.html#pystruct.learners.SubgradientSSVM" title="pystruct.learners.SubgradientSSVM"><tt class="xref py py-obj docutils literal"><span class="pre">learners.SubgradientSSVM</span></tt></a>(model[,&nbsp;max_iter,&nbsp;...])</td>

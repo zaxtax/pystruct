@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Latent Dynamics CRF &mdash; pystruct 0.1-alpha documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1-alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
+    <link rel="up" title="Examples" href="index.html" />
+    <link rel="next" title="Latent SVM" href="latent_svm_as_crf.html" />
+    <link rel="prev" title="SVM objective values" href="svm_objectives.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="latent_svm_as_crf.html" title="Latent SVM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="svm_objectives.html" title="SVM objective values"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Examples</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="latent-dynamics-crf">
+<span id="plot-latent-crf-py"></span><h1>Latent Dynamics CRF<a class="headerlink" href="#latent-dynamics-crf" title="Permalink to this headline">¶</a></h1>
+<p>Solving a 2d grid problem by introducing latent variable interactions.
+The input data is the same as in plot_grid_crf, a cross pattern.
+But now, the center is not given an extra state. That makes the problem
+much harder to solve for a pairwise model.
+We can still solve it by introducing latent dynamics. In essence we allow
+an additional state with different interactions, that maps to the same
+state (the cross) in the ground truth.</p>
+<img alt="../_images/plot_latent_crf_1.png" class="align-center" src="../_images/plot_latent_crf_1.png" />
+<p><strong>Script output</strong>:</p>
+<div class="highlight-python"><pre>LATENT SVM ITERATION 0
+Training 1-slack dual structural SVM
+new constraint too weak.
+new constraint too weak.
+new constraint too weak.
+new constraint too weak.
+new constraint too weak.
+new constraint too weak.
+no additional constraints
+LATENT SVM ITERATION 1
+no changes in latent variables of ground truth. stopping.
+loss training set: 1.000000
+loss test set: 0.995313</pre>
+</div>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/plot_latent_crf.py"><tt class="xref download docutils literal"><span class="pre">plot_latent_crf.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">pystruct.models</span> <span class="kn">import</span> <span class="n">LatentGridCRF</span>
+<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">LatentSSVM</span><span class="p">,</span> <span class="n">OneSlackSSVM</span>
+
+<span class="kn">import</span> <span class="nn">pystruct.toy_datasets</span> <span class="kn">as</span> <span class="nn">toy</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">toy</span><span class="o">.</span><span class="n">generate_crosses</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_crosses</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">total_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">n_labels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.unique.html#numpy.unique"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">Y_train</span><span class="p">))</span>
+<span class="n">crf</span> <span class="o">=</span> <span class="n">LatentGridCRF</span><span class="p">(</span><span class="n">n_labels</span><span class="o">=</span><span class="n">n_labels</span><span class="p">,</span> <span class="n">n_states_per_label</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                    <span class="n">inference_method</span><span class="o">=</span><span class="s">&#39;lp&#39;</span><span class="p">)</span>
+<span class="n">base_ssvm</span> <span class="o">=</span> <span class="n">OneSlackSSVM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">crf</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                         <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                         <span class="n">break_on_bad</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">inference_cache</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">tol</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">LatentSSVM</span><span class="p">(</span><span class="n">base_ssvm</span><span class="o">=</span><span class="n">base_ssvm</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;loss training set: </span><span class="si">%f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;loss test set: </span><span class="si">%f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">))</span>
+
+<span class="n">Y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Y_test</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Y_pred</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">crf</span><span class="o">.</span><span class="n">n_labels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;ground truth&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.6.0/reference/generated/numpy.argmax.html#numpy.argmax"><span class="n">np</span><span class="o">.</span><span class="n">argmax</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
+                 <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">crf</span><span class="o">.</span><span class="n">n_labels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;unaries only&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">crf</span><span class="o">.</span><span class="n">latent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">w</span><span class="p">),</span>
+                 <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">crf</span><span class="o">.</span><span class="n">n_states</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;latent final&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">crf</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">w</span><span class="p">),</span>
+                 <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">crf</span><span class="o">.</span><span class="n">n_states</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;prediction latent&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span>
+                 <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">crf</span><span class="o">.</span><span class="n">n_labels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;prediction&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(())</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(())</span>
+
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the example:</strong>  5.65 seconds</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="svm_objectives.html"
+                        title="previous chapter">SVM objective values</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="latent_svm_as_crf.html"
+                        title="next chapter">Latent SVM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/auto_examples/plot_latent_crf.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="latent_svm_as_crf.html" title="Latent SVM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="svm_objectives.html" title="SVM objective values"
+             >previous</a> |</li>
+        <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
+          <li><a href="index.html" >Examples</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Andreas Mueller.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

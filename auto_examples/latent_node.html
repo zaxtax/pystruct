@@ -28,7 +28,7 @@
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
     <link rel="up" title="Examples" href="index.html" />
     <link rel="next" title="pystruct.learners.OneSlackSSVM" href="../generated/pystruct.learners.OneSlackSSVM.html" />
-    <link rel="prev" title="Crammer-Singer Multi-Class SVM" href="multi_class_svm.html" /> 
+    <link rel="prev" title="Binary SVM as SSVM" href="plot_binary_svm.html" /> 
   </head>
   <body>
     <div class="related">
@@ -47,7 +47,7 @@
           <a href="../generated/pystruct.learners.OneSlackSSVM.html" title="pystruct.learners.OneSlackSSVM"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="multi_class_svm.html" title="Crammer-Singer Multi-Class SVM"
+          <a href="plot_binary_svm.html" title="Binary SVM as SSVM"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Examples</a> &raquo;</li> 
@@ -70,7 +70,7 @@ variables.</p>
 <span class="c">#from numpy.testing import assert_array_equal, assert_array_almost_equal</span>
 <span class="c">#from nose.tools import assert_equal</span>
 <span class="kn">from</span> <span class="nn">pystruct.models</span> <span class="kn">import</span> <span class="n">GraphCRF</span><span class="p">,</span> <span class="n">LatentNodeCRF</span>
-<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">StructuredSVM</span>
+<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">NSlackSSVM</span>
 <span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">LatentSubgradientSSVM</span>
 <span class="c">#from pystruct.learners import LatentSSVM</span>
 <span class="kn">import</span> <span class="nn">pystruct.toy_datasets</span> <span class="kn">as</span> <span class="nn">toy</span>
@@ -106,8 +106,8 @@ variables.</p>
 
 <span class="c"># first, use standard graph CRF. Can&#39;t do much, high loss.</span>
 <span class="n">crf</span> <span class="o">=</span> <span class="n">GraphCRF</span><span class="p">(</span><span class="n">n_states</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inference_method</span><span class="o">=</span><span class="s">&#39;lp&#39;</span><span class="p">)</span>
-<span class="n">svm</span> <span class="o">=</span> <span class="n">StructuredSVM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">crf</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                    <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">break_on_bad</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">svm</span> <span class="o">=</span> <span class="n">NSlackSSVM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">crf</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">break_on_bad</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c"># make dataset from X and graph without edges</span>
 <span class="c">#G_ = [np.zeros((0, 2), dtype=np.int) for x in X]</span>
@@ -165,8 +165,8 @@ variables.</p>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="multi_class_svm.html"
-                        title="previous chapter">Crammer-Singer Multi-Class SVM</a></p>
+  <p class="topless"><a href="plot_binary_svm.html"
+                        title="previous chapter">Binary SVM as SSVM</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../generated/pystruct.learners.OneSlackSSVM.html"
                         title="next chapter">pystruct.learners.OneSlackSSVM</a></p>
@@ -208,7 +208,7 @@ variables.</p>
           <a href="../generated/pystruct.learners.OneSlackSSVM.html" title="pystruct.learners.OneSlackSSVM"
              >next</a> |</li>
         <li class="right" >
-          <a href="multi_class_svm.html" title="Crammer-Singer Multi-Class SVM"
+          <a href="plot_binary_svm.html" title="Binary SVM as SSVM"
              >previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="index.html" >Examples</a> &raquo;</li> 

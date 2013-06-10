@@ -61,7 +61,7 @@
 <h1>pystruct.inference.inference_ad3<a class="headerlink" href="#pystruct-inference-inference-ad3" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="pystruct.inference.inference_ad3">
-<tt class="descclassname">pystruct.inference.</tt><tt class="descname">inference_ad3</tt><big>(</big><em>unary_potentials</em>, <em>pairwise_potentials</em>, <em>edges</em>, <em>relaxed=False</em>, <em>verbose=0</em>, <em>return_energy=False</em><big>)</big><a class="headerlink" href="#pystruct.inference.inference_ad3" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pystruct.inference.</tt><tt class="descname">inference_ad3</tt><big>(</big><em>unary_potentials</em>, <em>pairwise_potentials</em>, <em>edges</em>, <em>relaxed=False</em>, <em>verbose=0</em>, <em>return_energy=False</em>, <em>branch_and_bound=False</em><big>)</big><a class="headerlink" href="#pystruct.inference.inference_ad3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inference with AD3 dual decomposition subgradient solver.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -93,6 +93,11 @@ integer solution (<tt class="docutils literal"><span class="pre">False</span></t
 <div><p>Additionally return the energy of the returned solution (according to
 the solver).  If relaxed=False, this is the energy of the relaxed, not
 the rounded solution.</p>
+</div></blockquote>
+<p><strong>branch_and_bound</strong> : bool (default=False)</p>
+<blockquote>
+<div><p>Whether to attempt to produce an integral solution using
+branch-and-bound.</p>
 </div></blockquote>
 </td>
 </tr>
