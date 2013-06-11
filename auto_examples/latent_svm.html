@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>SVM as CRF &mdash; pystruct 0.1-alpha documentation</title>
+    <title>&lt;no title&gt; &mdash; pystruct 0.1-alpha documentation</title>
     
     <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pystruct 0.1-alpha documentation" href="../index.html" />
     <link rel="up" title="Examples" href="index.html" />
-    <link rel="next" title="SVM objective values" href="svm_objectives.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="latent_svm.html" /> 
+    <link rel="next" title="SVM as CRF" href="svm_as_crf.html" />
+    <link rel="prev" title="Examples" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -43,10 +43,10 @@
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="svm_objectives.html" title="SVM objective values"
+          <a href="svm_as_crf.html" title="SVM as CRF"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="latent_svm.html" title="&lt;no title&gt;"
+          <a href="index.html" title="Examples"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Examples</a> &raquo;</li> 
@@ -58,20 +58,16 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="svm-as-crf">
-<span id="svm-as-crf-py"></span><h1>SVM as CRF<a class="headerlink" href="#svm-as-crf" title="Permalink to this headline">¶</a></h1>
-<p>A CRF with one node is the same as a multiclass SVM.
-Evaluation on iris dataset (really easy).</p>
-<p><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/svm_as_crf.py"><tt class="xref download docutils literal"><span class="pre">svm_as_crf.py</span></tt></a></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+  <p id="latent-svm-py"><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/latent_svm.py"><tt class="xref download docutils literal"><span class="pre">latent_svm.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
 <span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
-<span class="kn">from</span> <span class="nn">pystruct.models</span> <span class="kn">import</span> <span class="n">GraphCRF</span>
-<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">NSlackSSVM</span>
+<span class="kn">from</span> <span class="nn">pystruct.problems</span> <span class="kn">import</span> <span class="n">GraphCRF</span>
+<span class="kn">from</span> <span class="nn">pystruct.learners</span> <span class="kn">import</span> <span class="n">StructuredSVM</span>
 
+<span class="c"># do a binary digit classification</span>
 <span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
 
@@ -83,7 +79,7 @@ Evaluation on iris dataset (really easy).</p>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
 <span class="n">pbl</span> <span class="o">=</span> <span class="n">GraphCRF</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n_states</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">inference_method</span><span class="o">=</span><span class="s">&#39;lp&#39;</span><span class="p">)</span>
-<span class="n">svm</span> <span class="o">=</span> <span class="n">NSlackSSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">svm</span> <span class="o">=</span> <span class="n">StructuredSVM</span><span class="p">(</span><span class="n">pbl</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">check_constraints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
@@ -94,7 +90,6 @@ Evaluation on iris dataset (really easy).</p>
       <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">),</span> <span class="n">time_svm</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
 
 
           </div>
@@ -103,11 +98,11 @@ Evaluation on iris dataset (really easy).</p>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="latent_svm.html"
-                        title="previous chapter">&lt;no title&gt;</a></p>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Examples</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="svm_objectives.html"
-                        title="next chapter">SVM objective values</a></p>
+  <p class="topless"><a href="svm_as_crf.html"
+                        title="next chapter">SVM as CRF</a></p>
         </div>
       </div>
       <div class="clearer"></div>
@@ -125,10 +120,10 @@ Evaluation on iris dataset (really easy).</p>
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="svm_objectives.html" title="SVM objective values"
+          <a href="svm_as_crf.html" title="SVM as CRF"
              >next</a> |</li>
         <li class="right" >
-          <a href="latent_svm.html" title="&lt;no title&gt;"
+          <a href="index.html" title="Examples"
              >previous</a> |</li>
         <li><a href="../index.html">pystruct 0.1-alpha documentation</a> &raquo;</li>
           <li><a href="index.html" >Examples</a> &raquo;</li> 

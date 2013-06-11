@@ -37,7 +37,7 @@ solved without pairwise interactions.
   new constraint too weak.
   new constraint too weak.
   no additional constraints
-  overall accuracy (training set): 0.977284
+  overall accuracy (training set): 0.975309
 
 
 
@@ -46,5 +46,5 @@ solved without pairwise interactions.
 .. literalinclude:: plot_grid_crf.py
     :lines: 12-
 
-**Total running time of the example:**  28.96 seconds
+**Total running time of the example:**  37.44 seconds
     

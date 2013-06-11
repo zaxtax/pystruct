@@ -45,5 +45,5 @@ state (the cross) in the ground truth.
 .. literalinclude:: plot_latent_crf.py
     :lines: 15-
 
-**Total running time of the example:**  5.65 seconds
+**Total running time of the example:**  8.32 seconds
     

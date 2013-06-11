@@ -58,6 +58,29 @@ Examples
     <div class="thumbnailContainer">
 
 
+.. figure:: ./images/thumb/latent_svm.png
+   :target: ./latent_svm.html
+
+   :ref:`latent_svm.py`
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   ./latent_svm
+
+
+
+.. raw:: html
+
+    <div class="thumbnailContainer">
+
+
 .. figure:: ./images/thumb/svm_as_crf.png
    :target: ./svm_as_crf.html
 
