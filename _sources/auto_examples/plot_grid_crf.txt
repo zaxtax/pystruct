@@ -46,5 +46,5 @@ solved without pairwise interactions.
 .. literalinclude:: plot_grid_crf.py
     :lines: 12-
 
-**Total running time of the example:**  37.44 seconds
+**Total running time of the example:**  43.85 seconds
     
